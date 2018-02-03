@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/register', 'API\UserController@register');
+Route::post('/login', 'API\UserController@login');
+
+
+Route::group(['middleware' => ['check_param']], function () {
+    Route::post('/user_information', 'API\UserController@user_information');
+});
