@@ -10,7 +10,7 @@ URI     : https://colorlib.com
  -->
 
 <head>
-    <title>MobApp - App Landing Page Template</title>
+    <title>HappyDeliv - Empower your Delivery Service</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +48,7 @@ URI     : https://colorlib.com
                                 <li class="nav-item"> <a class="nav-link" href="#gallery">GALLERY</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#pricing">PRICING</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">CONTACT</a> </li>
-                                <li class="nav-item"><a href="#" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Download</a></li>
+                                <li class="nav-item"><a href="{{URL::to('/')}}/register" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Register</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -60,7 +60,7 @@ URI     : https://colorlib.com
 
     <header class="bg-gradient" id="home">
         <div class="container mt-5">
-            <h1>Mobile App Landing Page Template</h1>
+            <h1>Empower Your Delivery Service</h1>
             <p class="tagline">The one and only solution for any kind of mobila app landing needs. Just change the screenshots and texts and you are good to go. </p>
         </div>
         <div class="img-holder mt-3"><img src="{{ URL::asset('mobapp')}}/images/iphonex.png" alt="phone" class="img-fluid"></div>

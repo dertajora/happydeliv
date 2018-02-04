@@ -16,4 +16,5 @@
 // });
 
 Route::get('/', 'WebsiteController@landing_page');
+Route::get('/register', 'WebsiteController@register_page');
 Route::get('/home', 'WebsiteController@landing_page');
