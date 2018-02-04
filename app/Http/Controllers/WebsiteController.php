@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Companies;
+use App\Roles;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
 
@@ -42,7 +43,11 @@ class WebsiteController extends Controller
 
         // auth user
         Auth::login($user);
-        
+        $role = Roles::where('id', $user->role_id)->first();
+        $company = Companies::where('id', $user->company_id)->first();
+        session(['role_name' => $role->name]);
+        session(['company_name' => $company->name]);
+        // redirect to intended menu/url
         return redirect()->intended('/dashboard');
 
     }

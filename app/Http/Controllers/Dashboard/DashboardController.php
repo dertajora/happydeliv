@@ -4,8 +4,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use Auth;
 
-class UserController extends Controller
+class DashboardController extends Controller
 {
 	public function __construct(){
 	    ini_set('max_input_time', 6000);
@@ -14,7 +15,12 @@ class UserController extends Controller
 	}
 
     public function home(Request $request){
-        echo "halooo";	
+        return view('dashboard.home');
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+        return redirect('login');
     }
 
     
