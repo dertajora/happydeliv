@@ -37,12 +37,12 @@ body {
 }
 
 a {
-    color: #009efd;
+    color: #e38cb7;
 }
 
 a:hover,
 a:focus {
-    color: #2af598;
+    color: #d6619c;
 }
 
 h1 {
@@ -89,7 +89,7 @@ p.lead {
 }
 
 .text-primary {
-    color: #fff !important;
+    color: #e38cb7 !important;
 }
 
 .light-font {
@@ -105,7 +105,7 @@ p.lead {
 }
 
 .btn-outline-light:hover {
-    color: #009efd;
+    color: #d6619c;
 }
 
 .btn-primary {
@@ -175,7 +175,6 @@ p.lead {
     }
 }
 
-/*035 Itmeo Branding*/
 
 /* NAVBAR
 ----------------------*/
@@ -187,10 +186,10 @@ p.lead {
 
 .nav-menu.is-scrolling,
 .nav-menu.menu-is-open {
-    background-color: rgb(42,245,152);
-    background: -moz-linear-gradient(135deg, rgb(42,245,152) 0%, rgb(0,158,253) 100%);
-    background: -webkit-linear-gradient(135deg, rgb(42,245,152) 0%, rgb(0,158,253) 100%);
-    background: linear-gradient(135deg, rgb(42,245,152) 0%, rgb(0,158,253) 100%);
+    background-color: rgb(74, 13, 143);
+    background: -moz-linear-gradient(135deg, rgb(74, 13, 143) 0%, rgb(250, 42, 143) 100%);
+    background: -webkit-linear-gradient(135deg, rgb(74, 13, 143) 0%, rgb(250, 42, 143) 100%);
+    background: linear-gradient(135deg, rgb(74, 13, 143) 0%, rgb(250, 42, 143) 100%);
     -webkit-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
@@ -212,7 +211,7 @@ p.lead {
     }
     .navbar-nav>.nav-item>.nav-link.active:after {
         content: "";
-        border-bottom: 2px solid #fff;
+        border-bottom: 2px solid #cd99d4;
         left: 1rem;
         right: 1rem;
         bottom: 5px;
@@ -241,16 +240,16 @@ header {
 }
 
 .bg-gradient {
-    background-image: -moz-linear-gradient( 135deg, rgba(42, 245, 152, 0.8) 0%, rgba(0,158,253, 0.8) 100%);
-    background-image: -webkit-linear-gradient( 135deg, rgba(42, 245, 152, 0.8) 0%, rgba(0,158,253, 0.8) 100%);
-    background-image: -ms-linear-gradient( 135deg, rgba(42, 245, 152, 0.8) 0%, rgba(0,158,253, 0.8) 100%);
-    background-image: linear-gradient( 135deg, rgba(42, 245, 152 0.8) 0%, rgba(0,158,253, 0.8) 100%);
+    background-image: -moz-linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
+    background-image: -webkit-linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
+    background-image: -ms-linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
+    background-image: linear-gradient( 135deg, rgba(60, 8, 118, 0.8) 0%, rgba(250, 0, 118, 0.8) 100%);
 }
 
 .tagline {
     font-size: 23px;
     font-weight: 300;
-    color: #fff;
+    color: #ffb8f6;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -598,7 +597,7 @@ header {
 .call-to-action .tagline {
     font-size: 16px;
     font-weight: 300;
-    color: #fff;
+    color: #ffb8f6;
     max-width: 650px;
     margin: 0 auto;
 }
@@ -626,13 +625,13 @@ header {
     line-height: 50px;
     margin: 0 0.3rem;
     border-radius: 5px;
-    color: #009efd;
+    color: #f4c9e2;
     transition: all 0.3s ease;
 }
 
 .social-icons a:hover {
     text-decoration: none;
-    color: #2af598;
+    color: #e38cb7;
 }
 
 @media (max-width:991px) {
