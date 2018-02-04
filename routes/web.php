@@ -16,5 +16,13 @@
 // });
 
 Route::get('/', 'WebsiteController@landing_page');
-Route::get('/register', 'WebsiteController@register_page');
+Route::get('/register', 'WebsiteController@registration_page');
+Route::get('/login', 'WebsiteController@login_page');
 Route::get('/home', 'WebsiteController@landing_page');
+
+Route::post('/login', 'WebsiteController@login_handle');
+Route::post('/register', 'WebsiteController@register_handle');
+
+Route::group(['middleware' => ['auth']], function () {
+   	Route::get('/dashboard', 'Dashboard\DashboardController@home');
+});

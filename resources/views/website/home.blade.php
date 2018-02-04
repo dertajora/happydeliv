@@ -10,7 +10,7 @@ URI     : https://colorlib.com
  -->
 
 <head>
-    <title>HappyDeliv - Empower your Delivery Service</title>
+    <title>HappyDeliv - Empower Your Delivery Service</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
