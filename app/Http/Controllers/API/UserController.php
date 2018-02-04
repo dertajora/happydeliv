@@ -61,19 +61,49 @@ class UserController extends Controller
             $user_current_password = Crypt::decrypt($user->password);
             
             if($data->password == $user_current_password){
-            	$user = User::find($user->id);
-                $user->token = $this->getToken(64);
-                $user->last_login = date('Y-m-d H:i:s');
+            	//generate OTP from Telkom API
+                $otp_telkom = 123456;
+                
+                //save OTP to user data
+                $user = User::where('phone', $data->phone)->select('id')->first();
+                $user->otp = $otp_telkom;
+                $user->last_generated_otp = date('Y-m-d H:i:s');
                 $user->save(); 
 
-               	// return user detail
-                $user = User::where('phone', $data->phone)
-                        ->select('email','phone','name','token')->first();
-                return response()->json(['result_code' => 1, 'result_message' => 'Authentification Success!', 'data' => $user]);
+                return response()->json(['result_code' => 1, 'result_message' => 'Authentification Success, OTP sent!', 'data' => ""]);
             }else{
                 return response()->json(['result_code' => 2, 'result_message' => 'Password not valid!', 'data' => '']);
             }
             
+        }
+    }
+
+    public function verify_otp(Request $request){
+
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->otp) || empty($data->phone)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Phone and OTP are mandatory!', 'data' => '']);
+        
+        $user = User::where('phone', $data->phone)->where('otp', $data->otp)->first();
+
+        if (count($user) > 0) {
+
+            // update token user
+            $user = User::find($user->id);
+            $user->token = $this->getToken(64);
+            $user->last_login = date('Y-m-d H:i:s');
+            $user->otp = null;
+            $user->last_generated_otp = null;
+            $user->save(); 
+
+            // return user detail
+            $user = User::where('phone', $data->phone)->select('email','phone','name','token')->first();
+            return response()->json(['result_code' => 1, 'result_message' => 'Authentification Success!', 'data' => $user]);
+        }else{
+            
+            
+            return response()->json(['result_code' => 1, 'result_message' => 'Authentification Failed, Invalid OTP!', 'data' => ""]);
         }
     }
 
