@@ -107,6 +107,31 @@ class UserController extends Controller
         }
     }
 
+    public function resend_otp(Request $request){
+
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->phone)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Phone is mandatory!', 'data' => '']);
+        
+        $user_found = User::where('phone', $data->phone)->where('role_id',1)->count();
+
+        if ($user_found == 0) 
+            return response()->json(['result_code' => 2, 'result_message' => 'User not found!', 'data' => '']);
+
+        //generate OTP from Telkom API again
+        $otp_telkom = 999999;
+                
+        //save OTP to user data
+        $user = User::where('phone', $data->phone)->select('id')->first();
+        $user->otp = $otp_telkom;
+        $user->last_generated_otp = date('Y-m-d H:i:s');
+        $user->save(); 
+                
+        return response()->json(['result_code' => 1, 'result_message' => 'OTP has been sent!', 'data' => ""]);
+        
+    }
+
     public function user_information(Request $request){
         $data = json_decode($request->get('user_info'));
         $user = User::where('phone', $data->phone)->select('name','email','phone')->first();
