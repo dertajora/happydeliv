@@ -21,7 +21,6 @@ class PackageController extends Controller
 
     public function home(){
 
-        $data['number'] = null;
         // select all packages
         if (Auth::user()->role_id == 4) {
             $packages = DB::table('packages')
@@ -33,7 +32,6 @@ class PackageController extends Controller
         }
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-         
         $data['number'] = 5 * ($currentPage - 1) + 1;
         
         $data['packages'] = $packages;
@@ -69,6 +67,26 @@ class PackageController extends Controller
         // send the recipient TRACK ID via Telkom SMS Notification
 
         return redirect('manage_packages')->with('status', 'Package has been added'); ;
+    }
+
+    public function deliveries(){
+        $deliveries = DB::table('deliveries')
+                        ->select('deliveries.track_id', 'packages.resi_number', 'deliveries.status','deliveries.courrier_id','deliveries.current_lat','deliveries.current_longi', 'deliveries.finished_at')
+                        ->join('packages','packages.id','=','deliveries.package_id')
+                        ->join('users','users.id','=','packages.created_by')
+                        ->orderBy('deliveries.created_at','desc')
+                        ->where('users.company_id', Auth::user()->company_id);
+
+        if (!empty($_GET['keyword'])) {
+            $deliveries = $deliveries->WhereRaw('track_id = '.$_GET['keyword']. ' OR resi_number = '.$_GET['keyword'] );
+        }
+
+        $data['deliveries'] = $deliveries->paginate(3);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $data['number'] = 5 * ($currentPage - 1) + 1;
+
+        return view('package.deliveries', $data);
     }
 
     
