@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/register', 'API\UserController@register');
 Route::post('/login', 'API\UserController@login');
+Route::post('/resend_otp', 'API\UserController@resend_otp');
 Route::post('/verify_otp', 'API\UserController@verify_otp');
 
 
