@@ -22,13 +22,13 @@ URI     : https://colorlib.com
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ URL::asset('mobapp')}}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ URL::asset('public/mobapp')}}/css/bootstrap.min.css">
     <!-- Themify Icons -->
-    <link rel="stylesheet" href="{{ URL::asset('mobapp')}}/css/themify-icons.css">
+    <link rel="stylesheet" href="{{ URL::asset('public/mobapp')}}/css/themify-icons.css">
     <!-- Owl carousel -->
-    <link rel="stylesheet" href="{{ URL::asset('mobapp')}}/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="{{ URL::asset('public/mobapp')}}/css/owl.carousel.min.css">
     <!-- Main css -->
-    <link href="{{ URL::asset('mobapp')}}/css/style.css" rel="stylesheet">
+    <link href="{{ URL::asset('public/mobapp')}}/css/style.css" rel="stylesheet">
 </head>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="30">
@@ -40,7 +40,7 @@ URI     : https://colorlib.com
             <div class="row">
                 <div class="col-md-12">
                     <nav class="navbar navbar-dark navbar-expand-lg">
-                        <a class="navbar-brand" href="index.html"><img src="{{ URL::asset('mobapp')}}/images/logo.png" class="img-fluid" alt="logo"></a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+                        <a class="navbar-brand" href="index.html"><img src="{{ URL::asset('public/mobapp')}}/images/logo.png" class="img-fluid" alt="logo"></a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
                         <div class="collapse navbar-collapse" id="navbar">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item"> <a class="nav-link active" href="#home">HOME <span class="sr-only">(current)</span></a> </li>
@@ -63,12 +63,12 @@ URI     : https://colorlib.com
             <h1>Empower Your Delivery Service</h1>
             <p class="tagline">The one and only solution for any kind of mobila app landing needs. Just change the screenshots and texts and you are good to go. </p>
         </div>
-        <div class="img-holder mt-3"><img src="{{ URL::asset('mobapp')}}/images/iphonex.png" alt="phone" class="img-fluid"></div>
+        <div class="img-holder mt-3"><img src="{{ URL::asset('public/mobapp')}}/images/iphonex.png" alt="phone" class="img-fluid"></div>
     </header>
 
     <div class="client-logos my-5">
         <div class="container text-center">
-            <img src="{{ URL::asset('mobapp')}}/images/client-logos.png" alt="client logos" class="img-fluid">
+            <img src="{{ URL::asset('public/mobapp')}}/images/client-logos.png" alt="client logos" class="img-fluid">
         </div>
     </div>
 
@@ -143,7 +143,7 @@ URI     : https://colorlib.com
                 </div>
             </div>
             <div class="perspective-phone">
-                <img src="{{ URL::asset('mobapp')}}/images/perspective.png" alt="perspective phone" class="img-fluid">
+                <img src="{{ URL::asset('public/mobapp')}}/images/perspective.png" alt="perspective phone" class="img-fluid">
             </div>
         </div>
 
@@ -175,7 +175,7 @@ URI     : https://colorlib.com
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="communication">
                     <div class="d-flex flex-column flex-lg-row">
-                        <img src="{{ URL::asset('mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <img src="{{ URL::asset('public/mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
                         <div>
 
                             <h2>Communicate with ease</h2>
@@ -201,12 +201,12 @@ URI     : https://colorlib.com
                                 sed tempor malesuada, sem nunc porta augue, in dictum arcu tortor id turpis. Proin aliquet vulputate aliquam.
                             </p>
                         </div>
-                        <img src="{{ URL::asset('mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <img src="{{ URL::asset('public/mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
                     </div>
                 </div>
                 <div class="tab-pane fade" id="messages">
                     <div class="d-flex flex-column flex-lg-row">
-                        <img src="{{ URL::asset('mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <img src="{{ URL::asset('public/mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
                         <div>
                             <h2>Realtime Messaging service</h2>
                             <p class="lead">Uniquely underwhelm premium outsourcing with proactive leadership skills. </p>
@@ -231,7 +231,7 @@ URI     : https://colorlib.com
                                 sed tempor malesuada, sem nunc porta augue, in dictum arcu tortor id turpis. Proin aliquet vulputate aliquam.
                             </p>
                         </div>
-                        <img src="{{ URL::asset('mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <img src="{{ URL::asset('public/mobapp')}}/images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@ URI     : https://colorlib.com
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img src="{{ URL::asset('mobapp')}}/images/dualphone.png" alt="dual phone" class="img-fluid">
+                    <img src="{{ URL::asset('public/mobapp')}}/images/dualphone.png" alt="dual phone" class="img-fluid">
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <div>
@@ -293,7 +293,7 @@ URI     : https://colorlib.com
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <img src="{{ URL::asset('mobapp')}}/images/iphonex.png" alt="iphone" class="img-fluid">
+                    <img src="{{ URL::asset('public/mobapp')}}/images/iphonex.png" alt="iphone" class="img-fluid">
                 </div>
 
             </div>
@@ -313,19 +313,19 @@ URI     : https://colorlib.com
 
             <div class="testimonials owl-carousel">
                 <div class="testimonials-single">
-                    <img src="{{ URL::asset('mobapp')}}/images/client.png" alt="client" class="client-img">
+                    <img src="{{ URL::asset('public/mobapp')}}/images/client.png" alt="client" class="client-img">
                     <blockquote class="blockquote">Uniquely streamline highly efficient scenarios and 24/7 initiatives. Conveniently embrace multifunctional ideas through proactive customer service. Distinctively conceptualize 2.0 intellectual capital via user-centric partnerships.</blockquote>
                     <h5 class="mt-4 mb-2">Crystal Gordon</h5>
                     <p class="text-primary">United States</p>
                 </div>
                 <div class="testimonials-single">
-                    <img src="{{ URL::asset('mobapp')}}/images/client.png" alt="client" class="client-img">
+                    <img src="{{ URL::asset('public/mobapp')}}/images/client.png" alt="client" class="client-img">
                     <blockquote class="blockquote">Uniquely streamline highly efficient scenarios and 24/7 initiatives. Conveniently embrace multifunctional ideas through proactive customer service. Distinctively conceptualize 2.0 intellectual capital via user-centric partnerships.</blockquote>
                     <h5 class="mt-4 mb-2">Crystal Gordon</h5>
                     <p class="text-primary">United States</p>
                 </div>
                 <div class="testimonials-single">
-                    <img src="{{ URL::asset('mobapp')}}/images/client.png" alt="client" class="client-img">
+                    <img src="{{ URL::asset('public/mobapp')}}/images/client.png" alt="client" class="client-img">
                     <blockquote class="blockquote">Uniquely streamline highly efficient scenarios and 24/7 initiatives. Conveniently embrace multifunctional ideas through proactive customer service. Distinctively conceptualize 2.0 intellectual capital via user-centric partnerships.</blockquote>
                     <h5 class="mt-4 mb-2">Crystal Gordon</h5>
                     <p class="text-primary">United States</p>
@@ -346,10 +346,10 @@ URI     : https://colorlib.com
             </div>
 
             <div class="img-gallery owl-carousel owl-theme">
-                <img src="{{ URL::asset('mobapp')}}/images/screen1.jpg" alt="image">
-                <img src="{{ URL::asset('mobapp')}}/images/screen2.jpg" alt="image">
-                <img src="{{ URL::asset('mobapp')}}/images/screen3.jpg" alt="image">
-                <img src="{{ URL::asset('mobapp')}}/images/screen1.jpg" alt="image">
+                <img src="{{ URL::asset('public/mobapp')}}/images/screen1.jpg" alt="image">
+                <img src="{{ URL::asset('public/mobapp')}}/images/screen2.jpg" alt="image">
+                <img src="{{ URL::asset('public/mobapp')}}/images/screen3.jpg" alt="image">
+                <img src="{{ URL::asset('public/mobapp')}}/images/screen1.jpg" alt="image">
             </div>
 
         </div>
@@ -466,8 +466,8 @@ URI     : https://colorlib.com
                 <p class="tagline">Available for all major mobile and desktop platforms. Rapidiously visualize optimal ROI rather than enterprise-wide methods of empowerment. </p>
                 <div class="my-4">
 
-                    <a href="#" class="btn btn-light"><img src="{{ URL::asset('mobapp')}}/images/appleicon.png" alt="icon"> App Store</a>
-                    <a href="#" class="btn btn-light"><img src="{{ URL::asset('mobapp')}}/images/playicon.png" alt="icon"> Google play</a>
+                    <a href="#" class="btn btn-light"><img src="{{ URL::asset('public/mobapp')}}/images/appleicon.png" alt="icon"> App Store</a>
+                    <a href="#" class="btn btn-light"><img src="{{ URL::asset('public/mobapp')}}/images/playicon.png" alt="icon"> Google play</a>
                 </div>
                 <p class="text-primary"><small><i>*Works on iOS 10.0.5+, Android Kitkat and above. </i></small></p>
             </div>
@@ -514,12 +514,12 @@ URI     : https://colorlib.com
     </footer>
 
     <!-- jQuery and Bootstrap -->
-    <script src="{{ URL::asset('mobapp')}}/js/jquery-3.2.1.min.js"></script>
-    <script src="{{ URL::asset('mobapp')}}/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ URL::asset('public/mobapp')}}/js/jquery-3.2.1.min.js"></script>
+    <script src="{{ URL::asset('public/mobapp')}}/js/bootstrap.bundle.min.js"></script>
     <!-- Plugins JS -->
-    <script src="{{ URL::asset('mobapp')}}/js/owl.carousel.min.js"></script>
+    <script src="{{ URL::asset('public/mobapp')}}/js/owl.carousel.min.js"></script>
     <!-- Custom JS -->
-    <script src="{{ URL::asset('mobapp')}}/js/script.js"></script>
+    <script src="{{ URL::asset('public/mobapp')}}/js/script.js"></script>
 
 </body>
 

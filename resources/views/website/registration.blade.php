@@ -11,7 +11,7 @@ swal("{{session('status')}}");
 @section('content')
 	<div class="limiter">
 		<div class="container-login100">
-			<div class="login100-more" style="background-image: url('{{ URL::asset('form')}}/images/rider.jpeg');"></div>
+			<div class="login100-more" style="background-image: url('{{ URL::asset('public/form')}}/images/rider.jpeg');"></div>
 
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
 				<form class="login100-form validate-form" method="POST" action="{{url('register')}}">
