@@ -28,7 +28,7 @@ Route::get('/logout', 'Dashboard\DashboardController@logout');
 
 Route::group(['middleware' => ['auth']], function () {
    	Route::get('/dashboard', 'Dashboard\DashboardController@home');
-   	
+
    	Route::get('/manage_employees', 'Dashboard\EmployeeController@home');
    	Route::get('/manage_employees/add', 'Dashboard\EmployeeController@add');
    	Route::post('/manage_employees/save', 'Dashboard\EmployeeController@save');
@@ -36,4 +36,6 @@ Route::group(['middleware' => ['auth']], function () {
    	Route::get('/manage_packages', 'Dashboard\PackageController@home');
    	Route::get('/manage_packages/add', 'Dashboard\PackageController@add');
    	Route::post('/manage_packages/save', 'Dashboard\PackageController@save');
+
+   	Route::get('/manage_deliveries', 'Dashboard\PackageController@deliveries');
 });

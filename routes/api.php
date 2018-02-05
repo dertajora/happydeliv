@@ -25,4 +25,5 @@ Route::post('/verify_otp', 'API\UserController@verify_otp');
 
 Route::group(['middleware' => ['check_param']], function () {
     Route::post('/user_information', 'API\UserController@user_information');
+    Route::post('/track_package', 'API\TrackController@add_package');
 });
