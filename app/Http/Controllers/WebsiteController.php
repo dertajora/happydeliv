@@ -47,6 +47,7 @@ class WebsiteController extends Controller
         $company = Companies::where('id', $user->company_id)->first();
         session(['role_name' => $role->name]);
         session(['company_name' => $company->name]);
+        session(['company_id' => $company->id]);
         // redirect to intended menu/url
         return redirect()->intended('/dashboard');
 

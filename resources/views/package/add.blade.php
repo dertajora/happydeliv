@@ -1,7 +1,7 @@
 @extends('layout.dashboard')
 @section('script_custom')
 <script type="text/javascript">
-$('#scheduling_monthly_report').addClass('active');
+$('#manage_packages').addClass('active');
 //Date picker
 $('#start_date').datepicker({
   format: 'yyyy-mm-dd',
@@ -23,7 +23,7 @@ $( document ).ready(function() {
 
 </script>
 @endsection
-@section('title','Add Employee')
+@section('title','Add Package')
 
 @section('content')
 @if (session('status'))
@@ -40,13 +40,26 @@ $( document ).ready(function() {
             </div>
             <div class="box-body">
               {{-- start --}}
-                    <form method="POST" action="{{URL::to('manage_employees/save')}}">
+                    <form method="POST" action="{{URL::to('manage_packages/save')}}">
                     {{ csrf_field() }} 
+
+
                     <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="name" class="form-control" id="name">
+                        <label>No Resi </label>
+                        <input type="text" name="resi_number" class="form-control" id="resi_number">
+                        
+                      </div>
+                    </div>
+                    </div>
+
+
+                    <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Recipient Name</label>
+                        <input type="text" name="recipient_name" class="form-control" id="recipient_name">
                         
                       </div>
                     </div>
@@ -55,33 +68,21 @@ $( document ).ready(function() {
                     <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label>Email</label>
-                        <input type="text" name="email" class="form-control" id="email">
+                        <label>Recipient Phone</label>
+                        <input type="number" name="recipient_phone" class="form-control" id="recipient_phone">
                         
                       </div>
                     </div>
                     </div>
 
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="number" name="phone" class="form-control" id="phone">
-                        
-                      </div>
-                    </div>
-                    </div>
 
                     <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label>Role</label>
-                        <select class="form-control" name="role" id="role">
-                            <option value="">Choose Role</option>
-                            <option value="2">Courrier</option>
-                            <option value="3">Staff Office</option>
+                        <label>Recipient Address</label>
+                        <textarea class="form-control" rows="3" name="recipient_address" id="recipient_address">
 
-                        </select>
+                        </textarea>
                         
                       </div>
                     </div>
@@ -91,7 +92,7 @@ $( document ).ready(function() {
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <input type="submit" value="Add Employee" class="btn btn-primary btn-flat">
+                          <input type="submit" value="Submit Package" class="btn btn-primary btn-flat">
                         </div>
                       </div>
                     </div>
