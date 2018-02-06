@@ -36,7 +36,29 @@ class TrackController extends Controller
         $watchlist->save();
 
         return response()->json(['result_code' => 1, 'result_message' => 'Track package success.', 'data' => '']);
+         
+    }
+
+    public function list_package(Request $request){
+
+        $user_info = json_decode($request->get('user_info'));
+        $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
         
+        $packages = DB::table('watchlist')
+                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id',
+                                DB::raw('IF(deliveries.status = 1, "Pending", "On the way with courrier") as status') )
+                            ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
+                            ->join('packages','packages.id','=','deliveries.package_id')
+                            ->join('companies', 'companies.id','=','packages.company_id')
+                            ->where('watchlist.user_id', $user_id)
+                            ->whereIn('deliveries.status',[1,2])
+                            ->get();
+
+        if (count($packages) == 0) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Packages not found', 'data' => '']);
+
+        return response()->json(['result_code' => 1, 'result_message' => 'List tracked packages.', 'data' => $packages]);
+         
     }
 	
 }
