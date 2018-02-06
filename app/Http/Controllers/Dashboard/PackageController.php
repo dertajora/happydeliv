@@ -50,6 +50,7 @@ class PackageController extends Controller
         $package->recipient_address = $request->get('recipient_address');
         $package->recipient_name = $request->get('recipient_name');
         $package->resi_number = $request->get('resi_number') ;
+        $package->company_id = Auth::user()->company_id ;
         $package->created_by = Auth::user()->id;
         $package->created_at = date('Y-m-d H:i:s');
         $package->save(); 
