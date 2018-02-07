@@ -41,7 +41,8 @@ class AddUsers extends Command
         $user = User::create([
                 'name' =>"dummy",
                 'email' => date('YmdHis')."email@dummy.gmail.com",
-                'phone' => '085742724990'
+                'phone' => '085742724990',
+                'password' => "dummy"
                 
             ]);
         $user->save();
