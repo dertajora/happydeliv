@@ -63,6 +63,8 @@ class UserController extends Controller
             if($data->password == $user_current_password){
             	//generate OTP from Telkom API
                 $otp_telkom = 123456;
+                $token_telkom = $this->generateTelkomToken();
+                
                 
                 //save OTP to user data
                 $user = User::where('phone', $data->phone)->select('id')->first();
@@ -151,6 +153,30 @@ class UserController extends Controller
         }
 
         return $token;
+    }
+
+    public function generateTelkomToken(){
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://api.mainapi.net/token");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        $headers = array();
+        $headers[] = "Authorization: Basic MzhMdjRaaVVxd0kyRVloVUl5QUl6UEpObU5jYTpWVExrSjIyQVVrUFZqalMwSV92RVRBaUN6Qk1h";
+        $headers[] = "Content-Type: application/x-www-form-urlencoded";
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        $data = json_decode($result);
+
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        curl_close ($ch);
+
+        return $data->access_token;
     }
 
 

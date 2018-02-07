@@ -85,7 +85,7 @@ class TrackController extends Controller
                             ->get();
 
         if (count($packages) == 0) 
-            return response()->json(['result_code' => 2, 'result_message' => 'Packages not found', 'data' => '']);
+            return response()->json(['result_code' => 2, 'result_message' => 'History tracked packages not found', 'data' => '']);
 
         return response()->json(['result_code' => 1, 'result_message' => 'List history tracked packages.', 'data' => $packages]);
          
