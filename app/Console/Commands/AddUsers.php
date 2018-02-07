@@ -42,7 +42,8 @@ class AddUsers extends Command
                 'name' =>"dummy",
                 'email' => date('YmdHis')."email@dummy.gmail.com",
                 'phone' => '085742724990',
-                'password' => "dummy"
+                'password' => "dummy",
+                'role_id' => 1
                 
             ]);
         $user->save();
