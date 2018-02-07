@@ -43,7 +43,7 @@ class AddUsers extends Command
                 'email' => date('YmdHis')."email@dummy.gmail.com",
                 'phone' => '085742724990',
                 'password' => "dummy",
-                'role_id' => 1
+                'role_id' => 4
                 
             ]);
         $user->save();
