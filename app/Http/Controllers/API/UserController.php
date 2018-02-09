@@ -48,6 +48,7 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
+
     	$data = json_decode($request->get('data'));
     	if ( empty($data->password) || empty($data->phone) )
     		return response()->json(['result_code' => 2, 'result_message' => 'Phone and Password are mandatory!', 'data' => '']);
@@ -61,16 +62,9 @@ class UserController extends Controller
             $user_current_password = Crypt::decrypt($user->password);
             
             if($data->password == $user_current_password){
-            	//generate OTP from Telkom API
-                $otp_telkom = 123456;
-                $token_telkom = $this->generateTelkomToken();
-                
-                
-                //save OTP to user data
-                $user = User::where('phone', $data->phone)->select('id')->first();
-                $user->otp = $otp_telkom;
-                $user->last_generated_otp = date('Y-m-d H:i:s');
-                $user->save(); 
+            	
+                //generate OTP from Telkom API
+                $token_telkom = $this->send_otp_to_user($data->phone);
 
                 return response()->json(['result_code' => 1, 'result_message' => 'Authentification Success, OTP sent!', 'data' => ""]);
             }else{
@@ -87,24 +81,28 @@ class UserController extends Controller
         if (empty($data->otp) || empty($data->phone)) 
             return response()->json(['result_code' => 2, 'result_message' => 'Phone and OTP are mandatory!', 'data' => '']);
         
-        $user = User::where('phone', $data->phone)->where('otp', $data->otp)->first();
+        // find user
+        $user = User::where('phone', $data->phone)->where('role_id', 1)->first();
 
-        if (count($user) > 0) {
+        // if user input unregistered phonenumber
+        if (count($user) == 0) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Invalid Phone Number', 'data' => '']);
+
+        // verify OTP entered by user to Telkom API
+        $check_otp = $this->check_otp_to_telkom($data->phone, $data->otp);
+
+        if ($check_otp == true) {
 
             // update token user
             $user = User::find($user->id);
             $user->token = $this->getToken(64);
             $user->last_login = date('Y-m-d H:i:s');
-            $user->otp = null;
-            $user->last_generated_otp = null;
             $user->save(); 
 
             // return user detail
             $user = User::where('phone', $data->phone)->select('email','phone','name','token')->first();
             return response()->json(['result_code' => 1, 'result_message' => 'Authentification Success!', 'data' => $user]);
         }else{
-            
-            
             return response()->json(['result_code' => 1, 'result_message' => 'Authentification Failed, Invalid OTP!', 'data' => ""]);
         }
     }
@@ -122,13 +120,7 @@ class UserController extends Controller
             return response()->json(['result_code' => 2, 'result_message' => 'User not found!', 'data' => '']);
 
         //generate OTP from Telkom API again
-        $otp_telkom = 999999;
-                
-        //save OTP to user data
-        $user = User::where('phone', $data->phone)->select('id')->first();
-        $user->otp = $otp_telkom;
-        $user->last_generated_otp = date('Y-m-d H:i:s');
-        $user->save(); 
+        $this->send_otp_to_user($data->phone);
                 
         return response()->json(['result_code' => 1, 'result_message' => 'OTP has been sent!', 'data' => ""]);
         
@@ -141,6 +133,7 @@ class UserController extends Controller
         return response()->json(['result_code' => 1, 'result_message' => 'User found', 'data' => $user]);
     }
 
+    // generate token for End User to use Android App
     public function getToken($length){
         $token = "";
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -155,28 +148,85 @@ class UserController extends Controller
         return $token;
     }
 
-    public function generateTelkomToken(){
-        $ch = curl_init();
+    public function check_otp_to_telkom($phone_number, $otp){
+        // get token access
+        $token_telkom = DB::table('token_configuration')->where('id',2)->value('token');
+        
+        $curl = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.mainapi.net/token");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.mainapi.net/smsotp/1.0.1/otp/".$phone_number."/verifications",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => "otpstr=".$otp."&digit=4",
+          CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer ".$token_telkom,
+            "Cache-Control: no-cache",
+            "Content-Type: application/x-www-form-urlencoded",
+          ),
+        ));
 
-        $headers = array();
-        $headers[] = "Authorization: Basic MzhMdjRaaVVxd0kyRVloVUl5QUl6UEpObU5jYTpWVExrSjIyQVVrUFZqalMwSV92RVRBaUN6Qk1h";
-        $headers[] = "Content-Type: application/x-www-form-urlencoded";
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
 
-        $result = curl_exec($ch);
-        $data = json_decode($result);
+        curl_close($curl);
 
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
+        if ($err) {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $err, 'type' => 2,'status' => 2, 'param' => 'phone_number='.$phone_number.'&otp='.$otp, 'created_at' => date('Y-m-d H:i:s')]
+            );
+            return false;
+        } else {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $response, 'type' => 2,'status' => 1, 'param' => 'phone_number='.$phone_number.'&otp='.$otp, 'created_at' => date('Y-m-d H:i:s')]
+            );
+
+            $data = json_decode($response);
+            return $data->status;
+
         }
-        curl_close ($ch);
+    }
 
-        return $data->access_token;
+    public function send_otp_to_user($phone_number){
+        // get token access
+        $token_telkom = DB::table('token_configuration')->where('id',2)->value('token');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.mainapi.net/smsotp/1.0.1/otp/".$phone_number,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "PUT",
+          CURLOPT_POSTFIELDS => "phoneNum=".$phone_number."&digit=4&content=Hi%20from%20HappyDeliv.%20Here%20is%20your%20OTP%20%20%7B%7Botp%7D%7D%20%2C%20please%20submit%20in%20our%20App%20before%2060%20seconds",
+          CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer ".$token_telkom,
+            "Cache-Control: no-cache",
+            "Content-Type: application/x-www-form-urlencoded"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $err, 'type' => 1,'status' => 2, 'param' => 'phone_number='.$phone_number, 'created_at' => date('Y-m-d H:i:s')]
+            );
+        } else {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $response, 'type' => 1,'status' => 1, 'param' => 'phone_number='.$phone_number, 'created_at' => date('Y-m-d H:i:s')]
+            );
+        }
     }
 
 
