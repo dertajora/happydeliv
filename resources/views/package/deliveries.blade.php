@@ -105,10 +105,10 @@ swal("{{session('status')}}");
                                 @endif
                             </td>
                             <td>
-                                @if ($row->finished_at == null) 
+                                @if ($row->delivered_at == null) 
                                     -
                                 @else
-                                    {{$row->finished_at}}
+                                    {{$row->delivered_at}}
                                 @endif
                             </td>
                         </tr>

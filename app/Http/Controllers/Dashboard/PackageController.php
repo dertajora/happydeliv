@@ -72,7 +72,7 @@ class PackageController extends Controller
 
     public function deliveries(){
         $deliveries = DB::table('deliveries')
-                        ->select('deliveries.track_id', 'packages.resi_number', 'deliveries.status','deliveries.courrier_id','deliveries.current_lat','deliveries.current_longi', 'deliveries.finished_at')
+                        ->select('deliveries.track_id', 'packages.resi_number', 'deliveries.status','deliveries.courrier_id','deliveries.current_lat','deliveries.current_longi', 'deliveries.delivered_at')
                         ->join('packages','packages.id','=','deliveries.package_id')
                         ->join('users','users.id','=','packages.created_by')
                         ->orderBy('deliveries.created_at','desc')

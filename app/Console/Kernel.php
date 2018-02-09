@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('add:user')->everyMinute(); //example of simple CRON
+        // $schedule->command('add:user')->everyMinute(); //example of simple CRON
         $schedule->command('generate:telkom_access_token')->everyThirtyMinutes(); 
     }
 
