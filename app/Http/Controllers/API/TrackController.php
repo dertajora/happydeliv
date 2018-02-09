@@ -51,10 +51,11 @@ class TrackController extends Controller
 
         $user_info = json_decode($request->get('user_info'));
         $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
-        
+        $base_url = url('/')."/public/partners/";
         $packages = DB::table('watchlist')
-                            ->select('companies.name', 'companies.profile_photo', 'packages.resi_number', 'deliveries.track_id',
-                                DB::raw('IF(deliveries.status = 1, "Pending", "On the way with courrier") as status') )
+                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id',
+                                DB::raw('IF(deliveries.status = 1, "Pending", "On the way with courrier") as status'),
+                                DB::raw('IFNULL(concat("'.$base_url.'", companies.profile_photo), "'.$base_url.'company-dummy.png'.'" ) as profile_photo') )
                             ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
                             ->join('packages','packages.id','=','deliveries.package_id')
                             ->join('companies', 'companies.id','=','packages.company_id')
@@ -74,9 +75,10 @@ class TrackController extends Controller
 
         $user_info = json_decode($request->get('user_info'));
         $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
-        
+        $base_url = url('/')."/public/partners/";
         $packages = DB::table('watchlist')
-                            ->select('companies.name', 'companies.profile_photo', 'packages.resi_number', 'deliveries.track_id','delivered_at')
+                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id','delivered_at',
+                                    DB::raw('IFNULL(concat("'.$base_url.'", companies.profile_photo), "'.$base_url.'company-dummy.png'.'" ) as profile_photo') )
                             ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
                             ->join('packages','packages.id','=','deliveries.package_id')
                             ->join('companies', 'companies.id','=','packages.company_id')
