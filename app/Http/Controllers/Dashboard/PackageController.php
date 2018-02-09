@@ -67,7 +67,7 @@ class PackageController extends Controller
         
         // send the recipient TRACK ID via Telkom SMS Notification
 
-        return redirect('manage_packages')->with('status', 'Package has been added'); ;
+        return redirect('manage_packages')->with('status', 'Package has been added');
     }
 
     public function deliveries(){
