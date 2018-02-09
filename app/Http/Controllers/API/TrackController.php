@@ -53,7 +53,7 @@ class TrackController extends Controller
         $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
         
         $packages = DB::table('watchlist')
-                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id',
+                            ->select('companies.name', 'companies.profile_photo', 'packages.resi_number', 'deliveries.track_id',
                                 DB::raw('IF(deliveries.status = 1, "Pending", "On the way with courrier") as status') )
                             ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
                             ->join('packages','packages.id','=','deliveries.package_id')
@@ -76,7 +76,7 @@ class TrackController extends Controller
         $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
         
         $packages = DB::table('watchlist')
-                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id','delivered_at')
+                            ->select('companies.name', 'companies.profile_photo', 'packages.resi_number', 'deliveries.track_id','delivered_at')
                             ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
                             ->join('packages','packages.id','=','deliveries.package_id')
                             ->join('companies', 'companies.id','=','packages.company_id')
