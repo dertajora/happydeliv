@@ -33,13 +33,13 @@ class WebsiteController extends Controller
     public function login_handle(Request $request){
         $user_found = User::where('phone', $request->get('phone'))->where('role_id','!=',1)->count();
         if ($user_found == 0) 
-            return redirect('login')->with('status', 'Login Failed. User Not Found!'); 
+            return redirect('login')->with('status', 'Login failed. User not found!'); 
 
         $user = User::where('phone', $request->get('phone'))->first();
         $user_current_password = Crypt::decrypt($user->password);
 
         if ($user_current_password != $request->get('password')) 
-            return redirect('login')->with('status', 'Login Failed. Wrong Password!'); 
+            return redirect('login')->with('status', 'Login failed. Invalid password!'); 
 
         // auth user
         Auth::login($user);
@@ -58,12 +58,14 @@ class WebsiteController extends Controller
         $user = User::where('email', $request->get('email'))->orwhere('phone',$request->get('phone'))->count();
 
         if ($user>0) 
-            return redirect('register')->with('status', 'Registration Failed! Email or Phone Number Already Used!'); 
+            return redirect('register')->with('status', 'Registration failed! Email or phone number already Used!'); 
         
         // register company
         $data = new Companies;
         $data->name = $request->get('company_name');
         $data->save();
+
+        $token = $this->getToken(50).date('Ymdhis');
 
         // register PIC of company
         $lastInsertedId = $data->id;
@@ -73,10 +75,148 @@ class WebsiteController extends Controller
         $user->name = $request->get('name');
         $user->company_id = $lastInsertedId ;
         $user->password = Crypt::encrypt($request->get('password'));
+        $user->is_verified = 0;
         $user->role_id = 4;
         $user->save(); 
 
-        return redirect('login')->with('status', 'Registration Success! Please Login'); 
+        DB::table('partner_verification')->insert(
+                ['verification_code' =>  $token, 'user_id' => $lastInsertedId, 'created_at' => date('Y-m-d H:i:s')]
+            );
+
+        $url_verification = url('/')."partner_verification?code=".$token."&user_id=".$lastInsertedId;
+        
+        // send email through Helio API
+        // message should in one line because if its not would produce an error
+        $message = "Dear Bapak/Ibu <b>".$request->get('name')."</b> dari <b>".$request->get('company_name')." </b>,<br><br><br>Terima kasih telah melakukan registrasi untuk menjadi partner HappyDeliv. <Br>Untuk dapat menggunakan seluruh fitur HappyDeliv, silahkan klik link berikut untuk melakukan verifikasi : <br><br> <a href='".$url_verification."'> ".$url_verification."</a><Br><Br><br> Apabila anda tidak merasa melakukan registrasi partner HappyDeliv, harap abaikan email ini. <br><br><br><br><b>HappyDeliv Team</b><br><br><br>Regards";
+
+        $this->send_email($request->get('email'), $message);
+
+        return redirect('login')->with('status', 'Registration success! Please check your email (including your spam mail directory) to verify your account.'); 
+    }
+
+    public function partner_verification(){
+        dd($_GET['verification_code']);
+    }
+
+    public function laboratorium(){
+        
+    }
+
+    function send_email($email, $message){
+        $token_helio = $this->get_token_helio();
+        if ($token_helio == false) {
+            return false;
+        }else{
+
+            // get token access
+            $token_telkom = DB::table('token_configuration')->where('id',2)->value('token');
+
+            $token_access_helio = $token_helio->result->user->token;
+
+            // use Helio API to send email verification
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://api.mainapi.net/helio/1.0.1/sendmail",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => "{\n    \"token\":\"".$token_access_helio."\",\n    \"subject\":\"Verifikasi Akun Partner HappyDeliv\",\n    \"to\":\"".$email."\",\n    \"body\": \"".$message."\"\n}",
+              CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer ".$token_telkom,
+                "Cache-Control: no-cache",
+                "Content-Type: application/json"
+              ),
+            ));
+
+
+            $response = curl_exec($curl);
+            $data = json_decode($response);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) { 
+                DB::table('logs_telkom_api')->insert(
+                    ['response' => $err, 'type' => 5,'status' => 2, 'param' => $email, 'created_at' => date('Y-m-d H:i:s')]
+                );
+                return false;
+            } else {
+                // if sukses
+                DB::table('logs_telkom_api')->insert(
+                    ['response' => $response, 'type' => 5,'status' => 1, 'param' => $email, 'created_at' => date('Y-m-d H:i:s')]
+                );
+                return true;
+            }
+        }
+    }
+
+    function get_token_helio(){
+
+        // get token access
+        $token_telkom = DB::table('token_configuration')->where('id',2)->value('token');
+
+        // get password for Helio account
+        $password_helio = DB::table('token_configuration')->where('id',3)->value('token');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.mainapi.net/helio/1.0.1/login",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => "{\"email\":\"admin@happydeliv.com\",\"password\":\"".$password_helio."\"}",
+          CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer ".$token_telkom,
+            "Cache-Control: no-cache",
+            "Content-Type: application/json"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $data = json_decode($response);
+
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err || $data->message != "ok") {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $err, 'type' => 4,'status' => 2, 'param' => '', 'created_at' => date('Y-m-d H:i:s')]
+            );
+            return false;
+        } else {
+            // if sukses
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $response, 'type' => 4,'status' => 1, 'param' => '', 'created_at' => date('Y-m-d H:i:s')]
+            );
+            return $data;
+        }
+
+       
+    }
+
+    // generate unique token to create Verification link for partner candidate
+    function getToken($length){
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+        $codeAlphabet.= "0123456789";
+        $max = strlen($codeAlphabet); // edited
+
+        for ($i=0; $i < $length; $i++) {
+            $token .= $codeAlphabet[random_int(0, $max-1)];
+        }
+
+        return $token;
     }
 
     
