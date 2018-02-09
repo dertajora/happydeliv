@@ -14,17 +14,20 @@
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// URL testing
+Route::get('/laboratorium', 'WebsiteController@laboratorium');
 
 Route::get('/', 'WebsiteController@landing_page');
 Route::get('/register', 'WebsiteController@registration_page');
 // alias in route login should be defined, so auth middleware could detect which login page user should be redirected when not logged in but trying to force dashboard
 Route::get('/login',  [ 'as' => 'login', 'uses' => 'WebsiteController@login_page']);
 Route::get('/home', 'WebsiteController@landing_page');
-
 Route::post('/login', 'WebsiteController@login_handle');
 Route::post('/register', 'WebsiteController@register_handle');
+Route::get('/partner_verification', 'WebsiteController@partner_verification');
 
 Route::get('/logout', 'Dashboard\DashboardController@logout');
+
 
 Route::group(['middleware' => ['auth']], function () {
    	Route::get('/dashboard', 'Dashboard\DashboardController@home');
