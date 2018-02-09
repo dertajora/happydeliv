@@ -83,7 +83,7 @@ class WebsiteController extends Controller
                 ['verification_code' =>  $token, 'user_id' => $lastInsertedId, 'created_at' => date('Y-m-d H:i:s')]
             );
 
-        $url_verification = url('/')."partner_verification?code=".$token."&user_id=".$lastInsertedId;
+        $url_verification = url('/')."/partner_verification?code=".$token."&user_id=".$lastInsertedId;
         
         // send email through Helio API
         // message should in one line because if its not would produce an error
