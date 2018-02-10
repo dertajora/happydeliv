@@ -41,6 +41,9 @@ class WebsiteController extends Controller
         if ($user_current_password != $request->get('password')) 
             return redirect('login')->with('status', 'Login failed. Invalid password!'); 
 
+        if ($user->is_verified != 1) 
+            return redirect('login')->with('status', 'Login failed. User is not verified!'); 
+
         // auth user
         Auth::login($user);
         $role = Roles::where('id', $user->role_id)->first();
