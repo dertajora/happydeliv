@@ -45,26 +45,87 @@ class PackageController extends Controller
          
     }
 
+    public function detail_package(Request $request){
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->track_id)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Track ID is mandatory', 'data' => '']);
+
+        $recipient_photo = url('/public/images/user-detail.png');
+        $package = DB::table('packages')
+                            ->select('packages.resi_number', 'deliveries.track_id', 'packages.recipient_name', 'packages.recipient_phone',
+                                     'packages.recipient_address', DB::raw('"'.$recipient_photo.'" as recipient_photo'))
+                            ->join('deliveries','deliveries.package_id','=','packages.id')
+                            ->where('deliveries.track_id', $data->track_id)
+                            ->first();
+
+        if (count($package) == 0) {
+            return response()->json(['result_code' => 2, 'result_message' => 'Package not found.', 'data' => '']);
+        }
+
+        return response()->json(['result_code' => 1, 'result_message' => 'Detail package.', 'data' => $package]);
+    }
+
+    // update package status into in-progress
+    public function process_package(Request $request){
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->track_id)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Track ID is mandatory', 'data' => '']);
+
+        
+        $delivery = DB::table('deliveries')->where('deliveries.track_id', $data->track_id)->first();
+
+        if (count($delivery) == 0) {
+            return response()->json(['result_code' => 2, 'result_message' => 'Package not found.', 'data' => '']);
+        }
+
+        // update package status to in-progress
+        Deliveries::where('track_id', $data->track_id)->update(['status' => 2, 'updated_at' => date('Y-m-d H:i:s')]);
+
+        return response()->json(['result_code' => 1, 'result_message' => 'Update status package to in-progress success.', 'data' => '']);
+    }
+
+    // update package status into finished
+    public function finish_package(Request $request){
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->track_id)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Track ID is mandatory', 'data' => '']);
+
+        
+        $delivery = DB::table('deliveries')->where('deliveries.track_id', $data->track_id)->first();
+
+        if (count($delivery) == 0) {
+            return response()->json(['result_code' => 2, 'result_message' => 'Package not found.', 'data' => '']);
+        }
+
+        // update package status to in-progress
+        Deliveries::where('track_id', $data->track_id)->update(['status' => 3, 'updated_at' => date('Y-m-d H:i:s'), 'delivered_at' => date('Y-m-d H:i:s')]);
+
+        return response()->json(['result_code' => 1, 'result_message' => 'Update status package to delivered success.', 'data' => '']);
+    }
+
     public function list_package(Request $request){
 
         $user_info = json_decode($request->get('user_info'));
         $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
-        $base_url = url('/')."/public/partners/";
-        $packages = DB::table('watchlist')
-                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id',
-                                DB::raw('IF(deliveries.status = 1, "Pending", "On the way with courrier") as status'),
-                                DB::raw('IFNULL(concat("'.$base_url.'", companies.profile_photo), "'.$base_url.'company-dummy.png'.'" ) as profile_photo') )
-                            ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
+        $recipient_image = url('/')."/public/images/recipient.png";
+        $packages = DB::table('deliveries')
+                            ->select('deliveries.track_id', 'packages.recipient_name', 'packages.resi_number',
+                                DB::raw('IF(deliveries.status = 1, "Pending", "In-Progress") as status'),
+                                
+                                DB::raw('"'.$recipient_image.'" as recipient_image'))
+                            
                             ->join('packages','packages.id','=','deliveries.package_id')
-                            ->join('companies', 'companies.id','=','packages.company_id')
-                            ->where('watchlist.user_id', $user_id)
                             ->whereIn('deliveries.status',[1,2])
+                            ->where('deliveries.courrier_id', $user_id)
                             ->get();
 
         if (count($packages) == 0) 
-            return response()->json(['result_code' => 2, 'result_message' => 'Packages not found', 'data' => '']);
+            return response()->json(['result_code' => 2, 'result_message' => 'List deliveries not found', 'data' => '']);
 
-        return response()->json(['result_code' => 1, 'result_message' => 'List tracked packages.', 'data' => $packages]);
+        return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $packages]);
          
     }
 
@@ -73,21 +134,19 @@ class PackageController extends Controller
 
         $user_info = json_decode($request->get('user_info'));
         $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
-        $base_url = url('/')."/public/partners/";
-        $packages = DB::table('watchlist')
-                            ->select('companies.name', 'packages.resi_number', 'deliveries.track_id','delivered_at',
-                                    DB::raw('IFNULL(concat("'.$base_url.'", companies.profile_photo), "'.$base_url.'company-dummy.png'.'" ) as profile_photo') )
-                            ->join('deliveries','deliveries.id','=','watchlist.delivery_id')
+        $recipient_image = url('/')."/public/images/recipient.png";
+        $packages = DB::table('deliveries')
+                            ->select('deliveries.track_id', 'packages.recipient_name', 'packages.resi_number', 'deliveries.delivered_at',
+                                DB::raw('"'.$recipient_image.'" as recipient_image'))
                             ->join('packages','packages.id','=','deliveries.package_id')
-                            ->join('companies', 'companies.id','=','packages.company_id')
-                            ->where('watchlist.user_id', $user_id)
                             ->whereIn('deliveries.status',[3])
+                            ->where('deliveries.courrier_id', $user_id)
                             ->get();
 
         if (count($packages) == 0) 
-            return response()->json(['result_code' => 2, 'result_message' => 'History tracked packages not found', 'data' => '']);
+            return response()->json(['result_code' => 2, 'result_message' => 'History delivery not found', 'data' => '']);
 
-        return response()->json(['result_code' => 1, 'result_message' => 'List history tracked packages.', 'data' => $packages]);
+        return response()->json(['result_code' => 1, 'result_message' => 'List history delivered packages.', 'data' => $packages]);
          
     }
 	

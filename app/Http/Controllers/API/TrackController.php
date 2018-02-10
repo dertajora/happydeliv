@@ -91,10 +91,10 @@ class TrackController extends Controller
                             ->first();
 
         if (count($package) == 0) {
-            return response()->json(['result_code' => 1, 'result_message' => 'Package not found.', 'data' => '']);
+            return response()->json(['result_code' => 2, 'result_message' => 'Package not found.', 'data' => '']);
         }
 
-        return response()->json(['result_code' => 1, 'result_message' => 'Detail package sent.', 'data' => $package]);
+        return response()->json(['result_code' => 1, 'result_message' => 'Detail package.', 'data' => $package]);
     }
 
 
