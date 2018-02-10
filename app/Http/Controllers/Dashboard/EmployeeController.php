@@ -41,6 +41,7 @@ class EmployeeController extends Controller
         $user->company_id = Auth::user()->company_id ;
         $user->password = Crypt::encrypt('123456');
         $user->role_id = $request->get('role');
+        $user->is_verified= 1;
         $user->save(); 
 
         return redirect('manage_employees')->with('status', 'Employee has been added'); ;
