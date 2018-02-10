@@ -79,12 +79,14 @@ class TrackController extends Controller
 
         $courrier_photo = url('/public/images/courrier.png');
         $package = DB::table('packages')
-                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id','users.name as courrier_name',
+                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id',
                                  'users.phone as courrier_phone', 'current_lat', 'current_longi',       
+                                 DB::raw('IFNULL(users.name, "-") as courrier_name'),
+                                 DB::raw('IFNULL(users.phone, "-") as courrier_phone'),
                                  DB::raw('"'.$courrier_photo.'" as courrier_photo'))
                             ->join('deliveries','deliveries.package_id','=','packages.id')
-                            ->join('users','users.id','=','deliveries.courrier_id')
-                            ->join('companies', 'companies.id','=','users.company_id')
+                            ->leftjoin('users','users.id','=','deliveries.courrier_id')
+                            ->join('companies', 'companies.id','=','packages.company_id')
                             ->where('deliveries.track_id', $data->track_id)
                             ->first();
 
