@@ -82,11 +82,13 @@ class WebsiteController extends Controller
         $user->role_id = 4;
         $user->save(); 
 
+        $lastInsertUserId = $user->id;
+
         DB::table('partner_verification')->insert(
-                ['verification_code' =>  $token, 'user_id' => $lastInsertedId, 'created_at' => date('Y-m-d H:i:s')]
+                ['verification_code' =>  $token, 'user_id' => $lastInsertUserId, 'created_at' => date('Y-m-d H:i:s')]
             );
 
-        $url_verification = url('/')."/partner_verification?code=".$token."&user_id=".$lastInsertedId;
+        $url_verification = url('/')."/partner_verification?code=".$token."&user_id=".$lastInsertUserId;
         
         // send email through Helio API
         // message should in one line because if its not would produce an error
