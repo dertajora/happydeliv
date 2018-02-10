@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         // $schedule->command('add:user')->everyMinute(); //example of simple CRON
         $schedule->command('generate:token_first_account')->everyFiveMinutes(); 
-        $schedule->command('generate:token_first_account')->everyFiveMinutes(); 
+        $schedule->command('generate:token_second_account')->everyFiveMinutes(); 
     }
 
     /**
