@@ -18,3 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', 'APICourrier\UserController@login');
+
+Route::group(['middleware' => ['check_param']], function () {
+    Route::post('/user_information', 'APICourrier\UserController@user_information');
+    
+});
