@@ -72,11 +72,12 @@ class PackageController extends Controller
 
     public function deliveries(){
         $deliveries = DB::table('deliveries')
-                        ->select('deliveries.track_id', 'packages.resi_number', 'deliveries.status','deliveries.courrier_id','deliveries.current_lat','deliveries.current_longi', 'deliveries.delivered_at')
+                        ->select('deliveries.track_id', 'packages.resi_number', 'deliveries.status','deliveries.courrier_id','users.name as courrier_name',
+                                 'deliveries.current_lat','deliveries.current_longi', 'deliveries.delivered_at')
                         ->join('packages','packages.id','=','deliveries.package_id')
                         ->join('users','users.id','=','packages.created_by')
                         ->orderBy('deliveries.created_at','desc')
-                        ->where('users.company_id', Auth::user()->company_id);
+                        ->where('packages.company_id', Auth::user()->company_id);
 
         if (!empty($_GET['keyword'])) {
             $deliveries = $deliveries->WhereRaw('track_id = '.$_GET['keyword']. ' OR resi_number = '.$_GET['keyword'] );
