@@ -22,5 +22,11 @@ Route::post('/login', 'APICourrier\UserController@login');
 Route::group(['middleware' => ['check_param']], function () {
     Route::post('/user_information', 'APICourrier\UserController@user_information');
     Route::post('/add_package', 'APICourrier\PackageController@add_package');
+    Route::post('/list_package', 'APICourrier\PackageController@list_package');
+    Route::post('/detail_package', 'APICourrier\PackageController@detail_package');
+
+    Route::post('/process_package', 'APICourrier\PackageController@process_package');
+    Route::post('/finish_package', 'APICourrier\PackageController@finish_package');
+    Route::post('/list_history', 'APICourrier\PackageController@list_history');
     
 });
