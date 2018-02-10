@@ -28,4 +28,5 @@ Route::group(['middleware' => ['check_param']], function () {
     Route::post('/track_package', 'API\TrackController@add_package');
     Route::post('/list_package', 'API\TrackController@list_package');
     Route::post('/list_history', 'API\TrackController@list_history');
+    Route::post('/detail_package', 'API\TrackController@detail_package');
 });

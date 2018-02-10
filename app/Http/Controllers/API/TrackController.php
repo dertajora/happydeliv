@@ -70,6 +70,31 @@ class TrackController extends Controller
          
     }
 
+    public function detail_package(Request $request){
+
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->track_id)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Track ID is mandatory', 'data' => '']);
+
+        $courrier_photo = url('/public/images/courrier.png');
+        $package = DB::table('packages')
+                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id','users.name as courrier_name',
+                                 'users.phone as courrier_phone', 'current_lat', 'current_longi',       
+                                 DB::raw('"'.$courrier_photo.'" as courrier_photo'))
+                            ->join('deliveries','deliveries.package_id','=','packages.id')
+                            ->join('users','users.id','=','deliveries.courrier_id')
+                            ->join('companies', 'companies.id','=','users.company_id')
+                            ->where('deliveries.track_id', $data->track_id)
+                            ->first();
+
+        if (count($package) == 0) {
+            return response()->json(['result_code' => 1, 'result_message' => 'Package not found.', 'data' => '']);
+        }
+
+        return response()->json(['result_code' => 1, 'result_message' => 'Detail package sent.', 'data' => $package]);
+    }
+
 
     public function list_history(Request $request){
 
