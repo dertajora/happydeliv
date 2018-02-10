@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\AddUsers::class,
+        \App\Console\Commands\GenerateTelkomSecondAccount::class,
+        \App\Console\Commands\GenerateTelkomToken::class,
     ];
 
     /**

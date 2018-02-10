@@ -20,7 +20,7 @@ class GenerateTelkomToken extends Command
      *
      * @var string
      */
-    protected $description = 'Generate access token from Telkom API every 30 minutes';
+    protected $description = 'Generate access token from Telkom API every 5 minutes';
 
     /**
      * Create a new command instance.

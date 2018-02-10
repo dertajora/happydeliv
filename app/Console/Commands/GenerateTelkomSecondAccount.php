@@ -20,7 +20,8 @@ class GenerateTelkomSecondAccount extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Generate access token from Telkom API every 5 minutes for second account';
+
 
     /**
      * Create a new command instance.
