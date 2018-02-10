@@ -6,21 +6,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use App\Token;
 
-class GenerateTelkomToken extends Command
+class GenerateTelkomSecondAccount extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'generate:token_first_account';
+    protected $signature = 'generate:token_second_account';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate access token from Telkom API every 30 minutes';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -39,9 +39,8 @@ class GenerateTelkomToken extends Command
      */
     public function handle()
     {
-
-        // retrieve credential account for authentification in DB
-        $telkom_auth =  DB::table('token_configuration')->where('id', 1)->value('token');
+        // retrieve credential second account for authentification in DB
+        $telkom_auth =  DB::table('token_configuration')->where('id', 4)->value('token');
 
         $ch = curl_init();
 
@@ -64,7 +63,7 @@ class GenerateTelkomToken extends Command
         curl_close ($ch);
 
         // update telkom access token
-        $access_token = Token::find(2);
+        $access_token = Token::find(5);
         $access_token->token = $data->access_token;
         $access_token->save();
     }
