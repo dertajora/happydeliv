@@ -50,7 +50,11 @@ class UserController extends Controller
     public function user_information(Request $request){
         $data = json_decode($request->get('user_info'));
         $user = User::where('phone', $data->phone)->select('name','email','phone')->first();
-
+        $user = DB::table('users')
+                    ->select('users.name', 'email', 'phone', 'companies.name as company')
+                    ->join('companies','companies.id','=','users.company_id')
+                    ->first();
+                    
         return response()->json(['result_code' => 1, 'result_message' => 'User found', 'data' => $user]);
     }
 
