@@ -94,14 +94,35 @@ class WebsiteController extends Controller
         return redirect('login')->with('status', 'Registration success! Please check your email (including your spam mail directory) to verify your account.'); 
     }
 
+    // verification after partner click verification link in their email
     public function partner_verification(){
-        dd($_GET['verification_code']);
+        
+        $request = DB::table('partner_verification')->where('user_id',$_GET['user_id'])->where('verification_code',$_GET['code'])->count();    
+        
+        // verification code request found
+        if ($request > 0) {
+
+            $verification_status = User::where('id', $_GET['user_id'])->value('is_verified');
+            if ($verification_status == 1) {
+                return redirect('login')->with('status', 'Account already verified'); 
+            }
+
+            // update status verification user
+            $user = User::find($_GET['user_id']);
+            $user->is_verified = 1;
+            $user->save(); 
+
+            return redirect('login')->with('status', 'Verification success! Now you ready to go.'); 
+        }else{
+            return redirect('login')->with('status', 'Verification failed! User not found.'); 
+        }
     }
 
     public function laboratorium(){
         
     }
 
+    // send email after partner register 
     function send_email($email, $message){
         $token_helio = $this->get_token_helio();
         if ($token_helio == false) {
@@ -155,6 +176,7 @@ class WebsiteController extends Controller
         }
     }
 
+    // get token for sending email using Helio
     function get_token_helio(){
 
         // get token access
