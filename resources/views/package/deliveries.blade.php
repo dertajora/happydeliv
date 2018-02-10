@@ -101,7 +101,7 @@ swal("{{session('status')}}");
                                 @if ($row->courrier_id == null) 
                                     -
                                 @else
-                                    {{$row->courrier_id}}
+                                    {{$row->courrier_name}}
                                 @endif
                             </td>
                             <td>

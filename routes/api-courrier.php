@@ -21,5 +21,6 @@ Route::post('/login', 'APICourrier\UserController@login');
 
 Route::group(['middleware' => ['check_param']], function () {
     Route::post('/user_information', 'APICourrier\UserController@user_information');
+    Route::post('/add_package', 'APICourrier\PackageController@add_package');
     
 });
