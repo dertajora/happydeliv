@@ -26,13 +26,13 @@ class PackageController extends Controller
             $packages = DB::table('packages')
                         ->select('recipient_name','recipient_address','recipient_phone','resi_number','packages.created_at','users.name as created_by')
                         ->join('users','users.id','=','packages.created_by')
-                        ->where('users.company_id', Auth::user()->company_id)->paginate(5);
+                        ->where('users.company_id', Auth::user()->company_id)->paginate(10);
         }else{
             $packages = DB::table('packages')->where('created_by', Auth::user()->id)->paginate(10);
         }
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $data['number'] = 5 * ($currentPage - 1) + 1;
+        $data['number'] = 10 * ($currentPage - 1) + 1;
         
         $data['packages'] = $packages;
         $data['list_employees'] = DB::table('users')->select('id','name')->where('company_id', Auth::user()->company_id)->get();
@@ -83,10 +83,10 @@ class PackageController extends Controller
             $deliveries = $deliveries->WhereRaw('track_id = '.$_GET['keyword']. ' OR resi_number = '.$_GET['keyword'] );
         }
 
-        $data['deliveries'] = $deliveries->paginate(3);
+        $data['deliveries'] = $deliveries->paginate(10);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $data['number'] = 5 * ($currentPage - 1) + 1;
+        $data['number'] = 10 * ($currentPage - 1) + 1;
 
         return view('package.deliveries', $data);
     }
