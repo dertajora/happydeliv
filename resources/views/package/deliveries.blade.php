@@ -37,7 +37,7 @@ swal("{{session('status')}}");
                     
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label>Track ID / Nomor Resi</label>
+                        <label>Track ID / No Resi</label>
                         <input type="text" name="keyword" class="form-control" id="keyword">
                       </div>
                     </div>
