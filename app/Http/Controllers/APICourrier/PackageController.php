@@ -123,7 +123,7 @@ class PackageController extends Controller
                             ->get();
 
         if (count($packages) == 0) 
-            return response()->json(['result_code' => 2, 'result_message' => 'List deliveries not found', 'data' => '']);
+            return response()->json(['result_code' => 2, 'result_message' => 'List deliveries not found', 'data' => array()]);
 
         return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $packages]);
          
@@ -144,7 +144,7 @@ class PackageController extends Controller
                             ->get();
 
         if (count($packages) == 0) 
-            return response()->json(['result_code' => 2, 'result_message' => 'History delivery not found', 'data' => '']);
+            return response()->json(['result_code' => 2, 'result_message' => 'History delivery not found', 'data' => array()]);
 
         return response()->json(['result_code' => 1, 'result_message' => 'List history delivered packages.', 'data' => $packages]);
          
