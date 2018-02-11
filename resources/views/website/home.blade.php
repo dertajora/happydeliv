@@ -61,7 +61,7 @@ URI     : https://colorlib.com
     <header class="bg-gradient" id="home">
         <div class="container mt-5">
             <h1>Empower Your Delivery Service</h1>
-            <p class="tagline">Tak perlu repot membuat dari nol. HappyDeliv menyediakan layanan yang memungkinkan perusahaan pengiriman barang memberikan fasilitas real-time tracking bagi para konsumen mereka. </p>
+            <p class="tagline">Tak perlu repot-repot membuat dari nol. HappyDeliv menyediakan layanan yang memungkinkan perusahaan pengiriman barang memberikan fasilitas real-time tracking bagi para konsumen mereka. </p>
         </div>
         <div class="img-holder mt-3"><img src="{{ URL::asset('public/mobapp')}}/images/happydeliv_splash.png" alt="phone" class="img-fluid"></div>
     </header>
@@ -83,10 +83,11 @@ URI     : https://colorlib.com
                     <div class="card features">
                         <div class="card-body">
                             <div class="media">
-                                <span class="ti-face-smile gradient-fill ti-3x mr-3"></span>
+                                {{-- <span class="ti-face-smile gradient-fill ti-3x mr-3"></span> --}}
+                                <img src="{{ URL::asset('public/mobapp')}}/images/tracking.png" alt="image" class="ti-3x mr-3">
                                 <div class="media-body">
                                     <h4 class="card-title">Real Time Tracking</h4>
-                                    <p class="card-text">Real Time Tracking dapat memberikan kenyamanan dan pengalaman yang menyenangkan bagi penerima barang. </p>
+                                    <p class="card-text">Real Time Tracking dapat memberikan kenyamanan dan pengalaman yang menyenangkan bagi penerima barang.</p>
                                 </div>
                             </div>
                         </div>
@@ -96,10 +97,12 @@ URI     : https://colorlib.com
                     <div class="card features">
                         <div class="card-body">
                             <div class="media">
-                                <span class="ti-settings gradient-fill ti-3x mr-3"></span>
+                                {{-- <span class="ti-settings gradient-fill ti-3x mr-3"></span> --}}
+                                <img src="{{ URL::asset('public/mobapp')}}/images/multiple.png" alt="image" class="ti-3x mr-3">
                                 <div class="media-body">
-                                    <h4 class="card-title">Customize</h4>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu pellentesque </p>
+                                    <h4 class="card-title">Multi Tracking</h4>
+                                    <p class="card-text">Penerima kiriman dapat melakukan tracking beberapa paket  sekaligus meskipun dari perusahaan yang berbeda
+ </p>
                                 </div>
                             </div>
                         </div>
@@ -109,10 +112,13 @@ URI     : https://colorlib.com
                     <div class="card features">
                         <div class="card-body">
                             <div class="media">
-                                <span class="ti-lock gradient-fill ti-3x mr-3"></span>
+                                {{-- <span class="ti-lock gradient-fill ti-3x mr-3"></span> --}}
+                                <img src="{{ URL::asset('public/mobapp')}}/images/route.png" alt="image" class="ti-3x mr-3">
                                 <div class="media-body">
-                                    <h4 class="card-title">Secure</h4>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu pellentesque </p>
+                                    <h4 class="card-title">Best Route</h4>
+                                    <p class="card-text">Kurir bisa mendapatkan
+rekomendasi rute terbaik dalam
+mengantarkan kiriman</p>
                                 </div>
                             </div>
                         </div>
