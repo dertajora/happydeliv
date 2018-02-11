@@ -26,6 +26,14 @@ class WebsiteController extends Controller
         return view('website.registration');
     }
 
+    public function login_guide(){
+        return view('website.login_guide');
+    }
+
+    public function download_app_end_user(){
+        echo "URL Coming Soon";
+    }
+
     public function login_page(){
         return view('website.login');
     }

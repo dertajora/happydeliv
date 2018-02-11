@@ -25,8 +25,9 @@ Route::get('/home', 'WebsiteController@landing_page');
 Route::post('/login', 'WebsiteController@login_handle');
 Route::post('/register', 'WebsiteController@register_handle');
 Route::get('/partner_verification', 'WebsiteController@partner_verification');
-
+Route::get('/login_guide', 'WebsiteController@login_guide');
 Route::get('/logout', 'Dashboard\DashboardController@logout');
+Route::get('/app_end_user', 'WebsiteController@download_app_end_user');
 
 
 Route::group(['middleware' => ['auth']], function () {
