@@ -35,6 +35,9 @@ class UserController extends Controller
             $user->role_id = 1;
             $user->save();  
 
+            //generate OTP from Telkom API (temporary because some minor bug)
+            $token_telkom = $this->send_otp_to_user($data->phone); 
+
             return response()->json(['result_code' => 1, 'result_message' => 'Registration success!', 'data' => '']); 
         } 
     }
