@@ -67,7 +67,7 @@ swal("{{session('status')}}");
 								<th>No Resi</th>
                 <th>Track ID</th>
 								<th>Status</th>
-								<th>Current Position</th>
+								{{-- <th>Current Position</th> --}}
                 <th>Courrier Name</th>
                 <th>Delivered Time</th>
                 
@@ -96,7 +96,7 @@ swal("{{session('status')}}");
                                 @endif
                                 
                             </td>
-                            <td>{{$row->current_lat}}, {{$row->current_longi}}</td>
+                            {{-- <td>{{$row->current_lat}}, {{$row->current_longi}}</td> --}}
                             <td>
                                 @if ($row->courrier_id == null) 
                                     -
