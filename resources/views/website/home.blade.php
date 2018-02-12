@@ -29,6 +29,7 @@ URI     : https://colorlib.com
     <link rel="stylesheet" href="{{ URL::asset('public/mobapp')}}/css/owl.carousel.min.css">
     <!-- Main css -->
     <link href="{{ URL::asset('public/mobapp')}}/css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/png"  href="{{ URL::asset('public/images')}}/favicon-fix.png">
 </head>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="30">

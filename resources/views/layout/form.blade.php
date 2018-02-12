@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
 	{{-- <link rel="icon" type="image/png" href="{{ URL::asset('form')}}/images/icons/favicon.ico"/> --}}
+	<link rel="icon" type="image/png"  href="{{ URL::asset('public/images')}}/favicon-fix.png">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('public/form')}}/vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
