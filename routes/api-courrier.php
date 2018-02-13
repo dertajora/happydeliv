@@ -17,9 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', 'APICourrier\UserController@login');
+Route::group(['middleware' => ['log_api']], function () {
+	Route::post('/login', 'APICourrier\UserController@login');
+});
 
-Route::group(['middleware' => ['check_param']], function () {
+Route::group(['middleware' => ['check_param', 'log_api']], function () {
     Route::post('/user_information', 'APICourrier\UserController@user_information');
     Route::post('/add_package', 'APICourrier\PackageController@add_package');
     Route::post('/list_package', 'APICourrier\PackageController@list_package');
