@@ -17,13 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', 'API\UserController@register');
-Route::post('/login', 'API\UserController@login');
-Route::post('/resend_otp', 'API\UserController@resend_otp');
-Route::post('/verify_otp', 'API\UserController@verify_otp');
+Route::group(['middleware' => ['log_api']], function () {
+	Route::post('/register', 'API\UserController@register');
+	Route::post('/login', 'API\UserController@login');
+	Route::post('/resend_otp', 'API\UserController@resend_otp');
+	Route::post('/verify_otp', 'API\UserController@verify_otp');
+});
 
-
-Route::group(['middleware' => ['check_param']], function () {
+Route::group(['middleware' => ['check_param','log_api']], function () {
     Route::post('/user_information', 'API\UserController@user_information');
     Route::post('/track_package', 'API\TrackController@add_package');
     Route::post('/list_package', 'API\TrackController@list_package');
