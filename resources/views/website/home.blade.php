@@ -266,7 +266,7 @@ memantau lokasi kiriman
             <div class="row">
 
                 <div class="col-lg-6 text-center text-lg-left">
-                    <p class="mb-2">  <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:admin@happydeliv.com">admin@happydeliv.com</a></p>
+                    <p class="mb-2">  <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:happydeliv@gmail.com">happydeliv@gmail.com</a></p>
                     <div class=" d-block d-sm-inline-block">
                         <p class="mb-2">
                             <span class="ti-headphone-alt mr-2"></span> <a href="tel:085742724990">085-742-724-990</a>
