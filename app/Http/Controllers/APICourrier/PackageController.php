@@ -120,6 +120,7 @@ class PackageController extends Controller
                             ->join('packages','packages.id','=','deliveries.package_id')
                             ->whereIn('deliveries.status',[1,2])
                             ->where('deliveries.courrier_id', $user_id)
+                            ->orderBy('deliveries.created_at','desc')
                             ->get();
 
         if (count($packages) == 0) 
@@ -141,6 +142,7 @@ class PackageController extends Controller
                             ->join('packages','packages.id','=','deliveries.package_id')
                             ->whereIn('deliveries.status',[3])
                             ->where('deliveries.courrier_id', $user_id)
+                            ->orderBy('deliveries.updated_at','desc')
                             ->get();
 
         if (count($packages) == 0) 
