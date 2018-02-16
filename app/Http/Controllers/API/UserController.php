@@ -153,7 +153,7 @@ class UserController extends Controller
 
     public function check_otp_to_telkom($phone_number, $otp){
         // get token access
-        $token_telkom = DB::table('token_configuration')->where('id',2)->value('token');
+        $token_telkom = DB::table('token_configuration')->where('id',5)->value('token');
         
         $curl = curl_init();
 
@@ -196,7 +196,7 @@ class UserController extends Controller
 
     public function send_otp_to_user($phone_number){
         // get token access
-        $token_telkom = DB::table('token_configuration')->where('id',2)->value('token');
+        $token_telkom = DB::table('token_configuration')->where('id',5)->value('token');
 
         $curl = curl_init();
 

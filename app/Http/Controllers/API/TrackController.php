@@ -61,6 +61,7 @@ class TrackController extends Controller
                             ->join('companies', 'companies.id','=','packages.company_id')
                             ->where('watchlist.user_id', $user_id)
                             ->whereIn('deliveries.status',[1,2])
+                            ->orderBy('watchlist.created_at','desc')
                             ->get();
 
         if (count($packages) == 0) 
@@ -111,6 +112,7 @@ class TrackController extends Controller
                             ->join('companies', 'companies.id','=','packages.company_id')
                             ->where('watchlist.user_id', $user_id)
                             ->whereIn('deliveries.status',[3])
+                            ->orderBy('watchlist.created_at','desc')
                             ->get();
 
         if (count($packages) == 0) 
