@@ -53,7 +53,7 @@ class PackageController extends Controller
 
         $recipient_photo = url('/public/images/user-detail.png');
         $package = DB::table('packages')
-                            ->select('packages.resi_number', 'deliveries.track_id', 'packages.recipient_name', 'packages.recipient_phone',
+                            ->select('packages.resi_number','deliveries.status','deliveries.track_id', 'packages.recipient_name', 'packages.recipient_phone',
                                      'packages.recipient_address', DB::raw('"'.$recipient_photo.'" as recipient_photo'))
                             ->join('deliveries','deliveries.package_id','=','packages.id')
                             ->where('deliveries.track_id', $data->track_id)

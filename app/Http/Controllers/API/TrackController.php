@@ -80,7 +80,7 @@ class TrackController extends Controller
 
         $courrier_photo = url('/public/images/courrier.png');
         $package = DB::table('packages')
-                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id',
+                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id','deliveries.status',
                                  'users.phone as courrier_phone', 'current_lat', 'current_longi',       
                                  DB::raw('IFNULL(users.name, "-") as courrier_name'),
                                  DB::raw('IFNULL(users.phone, "-") as courrier_phone'),
