@@ -80,8 +80,9 @@ class TrackController extends Controller
 
         $courrier_photo = url('/public/images/courrier.png');
         $package = DB::table('packages')
-                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id','deliveries.status',
-                                 'users.phone as courrier_phone', 'current_lat', 'current_longi',       
+                            ->select('companies.name as company_name', 'packages.resi_number', 'deliveries.track_id',
+                                 'users.phone as courrier_phone', 'current_lat', 'current_longi',   
+                                 DB::raw('IF(deliveries.status = 1, "Pending", IF(deliveries.status = 2, "In-Progress", "Done")) as status'),    
                                  DB::raw('IFNULL(users.name, "-") as courrier_name'),
                                  DB::raw('IFNULL(users.phone, "-") as courrier_phone'),
                                  DB::raw('"'.$courrier_photo.'" as courrier_photo'))
