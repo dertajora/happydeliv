@@ -132,6 +132,41 @@ class PackageController extends Controller
          
     }
 
+    public function best_route(Request $request){
+        
+        $data = json_decode($request->get('data'));
+
+        $user_info = json_decode($request->get('user_info'));
+        $user_id = User::where('phone', $user_info->phone)->where('token',$user_info->token)->value('id');
+        
+        if (empty($data->current_lat) || empty($data->current_longi)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Current GPS is mandatory', 'data' => '']);  
+
+
+        $packages = DB::table('deliveries')
+                            ->select('deliveries.track_id', 'packages.recipient_name', 'packages.resi_number',
+                                'packages.recipient_address', 'deliveries.destination_lat as lat_address',  
+                                'deliveries.destination_longi as longi_address'
+                                )
+                            ->join('packages','packages.id','=','deliveries.package_id')
+                            ->whereIn('deliveries.status',[1,2,3])
+                            ->where('deliveries.courrier_id', $user_id)
+                            ->orderBy('deliveries.created_at','desc')
+                            ->get();
+
+        if (count($packages) == 0) 
+            return response()->json(['result_code' => 2, 'result_message' => 'List deliveries not found', 'data' => array()]);
+
+        $i = 1;
+        foreach($packages as $row){
+            $row->sequence = $i;
+            $i=$i+1;
+        }
+
+        return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $packages]);
+         
+    }
+
 
     public function list_history(Request $request){
 

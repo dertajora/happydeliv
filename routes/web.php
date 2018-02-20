@@ -28,6 +28,9 @@ Route::group(['middleware' => ['log_web']], function () {
 	Route::get('/login_guide', 'WebsiteController@login_guide');
 	Route::get('/logout', 'Dashboard\DashboardController@logout');
 	Route::get('/app_end_user', 'WebsiteController@download_app_end_user');
+
+	Route::get('/test_push_notif', 'GeneralController@test_push_notif');
+
 });
 
 
