@@ -31,5 +31,6 @@ Route::group(['middleware' => ['check_param', 'log_api']], function () {
     Route::post('/process_package', 'APICourrier\PackageController@process_package');
     Route::post('/finish_package', 'APICourrier\PackageController@finish_package');
     Route::post('/list_history', 'APICourrier\PackageController@list_history');
+    Route::post('/best_route', 'APICourrier\PackageController@best_route');
     
 });
