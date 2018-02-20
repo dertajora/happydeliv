@@ -153,5 +153,23 @@ class PackageController extends Controller
         return response()->json(['result_code' => 1, 'result_message' => 'List history delivered packages.', 'data' => $packages]);
          
     }
+
+    public function set_destination(Request $request){
+        $data = json_decode($request->get('data'));
+
+        if (empty($data->track_id)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'Track ID is mandatory', 'data' => '']); 
+
+        if (empty($data->destination_lat) || empty($data->destination_longi)) 
+            return response()->json(['result_code' => 2, 'result_message' => 'GPS destination is mandatory', 'data' => '']);  
+
+        // update package status to in-progress
+        Deliveries::where('track_id', $data->track_id)->update([
+                'destination_lat' => $data->destination_lat,
+                'destination_longi' => $data->destination_longi, 
+                'updated_at' => date('Y-m-d H:i:s')]); 
+
+        return response()->json(['result_code' => 1, 'result_message' => 'Update GPS package success.', 'data' => '']);
+    }
 	
 }
