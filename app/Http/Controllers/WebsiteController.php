@@ -116,14 +116,20 @@ class WebsiteController extends Controller
         if ($request > 0) {
 
             $verification_status = User::where('id', $_GET['user_id'])->value('is_verified');
-            if ($verification_status == 1) {
-                return redirect('login')->with('status', 'Account already verified'); 
-            }
+            // if ($verification_status == 1) {
+            //     return redirect('login')->with('status', 'Account already verified'); 
+            // }
 
             // update status verification user
             $user = User::find($_GET['user_id']);
             $user->is_verified = 1;
             $user->save(); 
+
+            $company_id = User::where('id', $_GET['user_id'])->value('company_id');
+
+            DB::table('api_credentials')->insert(
+                    ['company_id' => $company_id, 'client_id' => $this->getToken(32),'client_secret' => $this->getToken(32)]
+                );
 
             return redirect('login')->with('status', 'Verification success! Now you ready to go.'); 
         }else{

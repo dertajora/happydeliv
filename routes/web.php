@@ -29,8 +29,6 @@ Route::group(['middleware' => ['log_web']], function () {
 	Route::get('/logout', 'Dashboard\DashboardController@logout');
 	Route::get('/app_end_user', 'WebsiteController@download_app_end_user');
 
-	Route::get('/test_push_notif', 'GeneralController@test_push_notif');
-
 });
 
 
@@ -46,4 +44,7 @@ Route::group(['middleware' => ['auth', 'log_web']], function () {
    	Route::post('/manage_packages/save', 'Dashboard\PackageController@save');
 
    	Route::get('/manage_deliveries', 'Dashboard\PackageController@deliveries');
+
+   	Route::get('/manage_credentials', 'GeneralController@manage_credential');
+   	Route::post('/generate_token_api', 'GeneralController@generate_token_api');
 });
