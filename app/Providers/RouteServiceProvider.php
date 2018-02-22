@@ -75,5 +75,11 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api-courrier.php'));
+
+        // added for API Public
+        Route::prefix('v1')
+             ->middleware('api')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/api-public.php'));
     }
 }
