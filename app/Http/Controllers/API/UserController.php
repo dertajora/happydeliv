@@ -104,7 +104,7 @@ class UserController extends Controller
 
             if (!empty($data->otp)) {
                 $user = User::find($user->id);
-                $user->token_firebase = $data->token_firebase;
+                $user->firebase_token = $data->token_firebase;
                 $user->save(); 
             }
 
