@@ -18,47 +18,36 @@ class GeneralController extends Controller
         ini_set('memory_limit', '1024M');
 	}
 
-    public function test_push_notif(Request $request){
+    public function manage_credential(Request $request){
+        $credentials = DB::table('api_credentials')->where('company_id', Auth::user()->company_id)->first();
+        $data['credentials'] = $credentials; 
+        return view('configuration.credentials', $data);
+    }
 
-        $registration_id = $_GET['id'];
-       
-        #API access key from Google API's Console
-            // API access key from Google API's Console
-            define( 'API_ACCESS_KEY', 'AIzaSyAdMZMj0ejfLwev-kBm1R98Br_1I8zG8fM' );
-            $registrationIds = $_GET['id'];
-        #prep the bundle
-             $msg = array
-                  (
-                'body'  => 'Body  Of Notification',
-                'title' => 'Title Of Notification',
-                        'icon'  => 'myicon',/*Default Icon*/
-                        'sound' => 'mySound'/*Default sound*/
-                  );
-            $fields = array
-                    (
-                        'to'        => $registrationIds,
-                        'notification'  => $msg
-                    );
-            
-            
-            $headers = array
-                    (
-                        'Authorization: key=' . API_ACCESS_KEY,
-                        'Content-Type: application/json'
-                    );
-        #Send Reponse To FireBase Server    
-                $ch = curl_init();
-                curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
-                curl_setopt( $ch,CURLOPT_POST, true );
-                curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-                curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-                curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-                curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
-                $result = curl_exec($ch );
-                curl_close( $ch );
-        #Echo Result Of FireBase Server
-        echo $result;
+    public function generate_token_api(Request $request){
+        $client_id = $request->input('client_id');
+        $client_secret = $request->input('client_secret');
 
+        $data['token_api'] = $this->getToken(64);
+        $data['token_generated_time'] = date('Y-m-d H:i:s'); 
+
+        DB::table('api_credentials')->where('client_id',$client_id)->where('client_secret', $client_secret)->update($data); 
+        return json_encode("sukses");
+    }
+
+    // generate unique token to create Verification link for partner candidate
+    function getToken($length){
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+        $codeAlphabet.= "0123456789";
+        $max = strlen($codeAlphabet); // edited
+
+        for ($i=0; $i < $length; $i++) {
+            $token .= $codeAlphabet[random_int(0, $max-1)];
+        }
+
+        return $token;
     }
 	
 }
