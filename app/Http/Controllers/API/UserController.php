@@ -102,6 +102,12 @@ class UserController extends Controller
             $user->last_login = date('Y-m-d H:i:s');
             $user->save(); 
 
+            if (!empty($data->otp)) {
+                $user = User::find($user->id);
+                $user->token_firebase = $data->token_firebase;
+                $user->save(); 
+            }
+
             // return user detail
             $user = User::where('phone', $data->phone)->select('email','phone','name','token')->first();
             return response()->json(['result_code' => 1, 'result_message' => 'Authentification Success!', 'data' => $user]);
