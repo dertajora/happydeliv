@@ -76,10 +76,19 @@ class PackageController extends Controller
             return response()->json(['result_code' => 2, 'result_message' => 'Track ID is mandatory', 'data' => '']);
 
         
-        $delivery = DB::table('deliveries')->where('deliveries.track_id', $data->track_id)->first();
+        $delivery = DB::table('deliveries')->join('packages','packages.id', '=', 'deliveries.package_id')->where('deliveries.track_id', $data->track_id)->first();
 
         if (count($delivery) == 0) {
             return response()->json(['result_code' => 2, 'result_message' => 'Package not found.', 'data' => '']);
+        }
+
+        $recipient_phone = $delivery->recipient_phone;
+
+        $recipient = DB::table('users')->where('phone', $recipient_phone)->where('role_id', 1)->first();
+
+        // if recipient have account and already firebase token, send push notif
+        if (count($recipient) > 0 && !empty($recipient->firebase_token)) {
+            $this->send_push_notification($data->track_id, $recipient->firebase_token);
         }
 
         // update package status to in-progress
@@ -131,6 +140,44 @@ class PackageController extends Controller
         return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $packages]);
          
     }
+
+    public function send_push_notification($track_id, $user_firebase_token){
+        // get token access
+        $firebase_key = DB::table('token_configuration')->where('id',6)->value('token');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => "{\n \"to\" : \"".$user_firebase_token."\",\n \"collapse_key\" : \"type_a\",\n \"notification\" : {\n     \"body\" : \"Kiriman anda dengan Track ID ".$track_id." sedang diantar kurir\",\n     \"title\": \"HappyDeliv\"\n },\n \"data\" : {\n     \"body\" : \"".$track_id."\"\n }\n}",
+          CURLOPT_HTTPHEADER => array(
+            "authorization: key=".$firebase_key,
+            "cache-control: no-cache",
+            "content-type: application/json"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $err, 'type' => 6,'status' => 2, 'param' => 'track_id='.$track_id, 'created_at' => date('Y-m-d H:i:s')]
+            );
+        } else {
+            DB::table('logs_telkom_api')->insert(
+                ['response' => $response, 'type' => 6,'status' => 1, 'param' => 'track_id='.$track_id, 'created_at' => date('Y-m-d H:i:s')]
+            );
+        }
+    }   
 
     public function best_route(Request $request){
         
