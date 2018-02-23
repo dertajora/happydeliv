@@ -20,6 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::post('/add_package', 'APIPublic\PackageController@add_package');
-Route::post('/get_token', 'APIPublic\generalController@get_token');
+Route::post('/get_token', 'APIPublic\GeneralController@get_token');
 
     
