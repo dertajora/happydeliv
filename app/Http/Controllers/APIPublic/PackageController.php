@@ -16,8 +16,10 @@ class PackageController extends Controller
 
     public function add_package(Request $request){
         
-        $header_authorization = $request->header('Authorization');
-        dd($header_authorization); 
+        $headers = $request->header('Authorization');
+        if (empty($headers)) {
+            return response()->json(['result_code' => 2, 'result_message' => 'Authorization valus is mandatory', 'data' => '']);
+        } 
     }
 
     
