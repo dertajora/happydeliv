@@ -40,12 +40,13 @@ class GeneralController extends Controller
             return response()->json(['result_code' => 100, 'result_message' => 'Invalid Credential', 'data' => '']);
         }
 
-        $data['token_api'] = $this->getToken(64);
+        $new_token = $this->getToken(64);
+        $data['token_api'] = $new_token;
         $data['token_generated_time'] = date('Y-m-d H:i:s'); 
 
         DB::table('api_credentials')->where('client_id',$credentials[0])->where('client_secret', $credentials[1])->update($data); 
 
-        $response['token'] = $this->getToken(64);
+        $response['token'] = $new_token;
         $response['token_expired_time'] = date('Y-m-d H:i:s ', strtotime($data['token_generated_time'].' + 1 hours'));
         return response()->json(['result_code' => 200, 'result_message' => 'Generate token success', 'data' => $response]);
 
