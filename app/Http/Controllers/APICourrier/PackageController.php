@@ -202,7 +202,7 @@ class PackageController extends Controller
                             ->get();
 
         for ($i=0; $i < count($packages); $i++) { 
-            if ($i = 0) {
+            if ($i == 0) {
                 $packages[$i]->previous_lat = $data->current_lat;
                 $packages[$i]->previous_longi = $data->current_longi;
             }else{
