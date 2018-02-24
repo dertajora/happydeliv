@@ -4,7 +4,7 @@
     "description": "Ini adalah dokumentasi API HappyDeliv yang dapat digunakan oleh para mitra untuk kepentingan bisnisnya.",
     "version": "1.0.0",
     "title": "HappyDeliv API for Partner",
-    // "termsOfService": "http:\/\/swagger.io\/terms\/",
+    "termsOfService": "http:\/\/swagger.io\/terms\/",
     "contact": {
       "email": "happydeliv@gmail.com"
     },
