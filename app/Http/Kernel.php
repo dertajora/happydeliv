@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'check_param' => \App\Http\Middleware\protect_api::class,
         'log_api' => \App\Http\Middleware\log_api_request::class,
         'log_web' => \App\Http\Middleware\log_web_request::class,
+        'check_auth' => \App\Http\Middleware\check_authorization::class,
     ];
 }

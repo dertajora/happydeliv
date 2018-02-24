@@ -119,7 +119,7 @@ URI     : https://colorlib.com
                                     <h4 class="card-title">Best Route</h4>
                                     <p class="card-text">Kurir bisa mendapatkan
 rekomendasi rute terbaik dalam
-mengantarkan kiriman</p>
+mengantarkan kiriman<br>&nbsp</p>
                                 </div>
                             </div>
                         </div>
