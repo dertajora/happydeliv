@@ -57,6 +57,32 @@ class PackageController extends Controller
         
     }
 
+    public function detail_package(Request $request){
+
+        $data_json = json_decode(file_get_contents("php://input"), true);
+        if (empty($data_json['track_id'])) {
+            return response()->json(['result_code' => 100, 'result_message' => 'Track ID is mandatory']);
+        }
+        
+        $package = DB::table('packages')
+                            ->select('packages.resi_number', 'deliveries.track_id', 'packages.recipient_name',
+                                 'packages.recipient_address', 'packages.recipient_phone',
+                                 'users.phone as courrier_phone', 'current_lat', 'current_longi',   
+                                 DB::raw('IF(deliveries.status = 1, "Pending", IF(deliveries.status = 2, "In-Progress", "Done")) as status'),    
+                                 DB::raw('IFNULL(users.name, "-") as courrier_name'),
+                                 DB::raw('IFNULL(users.phone, "-") as courrier_phone'))
+                            ->join('deliveries','deliveries.package_id','=','packages.id')
+                            ->leftjoin('users','users.id','=','deliveries.courrier_id')
+                            ->where('deliveries.track_id', $data_json['track_id'])
+                            ->first();
+
+        if (count($package) == 0) {
+            return response()->json(['result_code' => 2, 'result_message' => 'Package not found.', 'data' => '']);
+        }
+
+        return response()->json(['result_code' => 1, 'result_message' => 'Detail package.', 'data' => $package]);
+    }
+
     public function send_sms_notification($recipient_phone, $track_id){
 
         // get token access for second account

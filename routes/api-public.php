@@ -21,5 +21,6 @@ Route::post('/get_token', 'APIPublic\GeneralController@get_token');
 
 Route::group(['middleware' => ['check_auth', 'log_api']], function () {
     Route::post('/add_package', 'APIPublic\PackageController@add_package');
+    Route::post('/detail_package', 'APIPublic\PackageController@detail_package');
 });
     
