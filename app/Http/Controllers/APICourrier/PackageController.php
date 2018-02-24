@@ -201,6 +201,16 @@ class PackageController extends Controller
                             ->orderBy('deliveries.created_at','desc')
                             ->get();
 
+        for ($i=0; $i < count($packages); $i++) { 
+            if ($i = 0) {
+                $packages[$i]->previous_lat = $data->current_lat;
+                $packages[$i]->previous_longi = $data->current_longi;
+            }else{
+                $packages[$i]->previous_lat = $packages[$i-1]->lat_address;
+                $packages[$i]->previous_longi = $packages[$i-1]->longi_address;
+            }
+        }
+
         if (count($packages) == 0) 
             return response()->json(['result_code' => 2, 'result_message' => 'List deliveries not found', 'data' => array()]);
 
