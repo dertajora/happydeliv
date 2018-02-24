@@ -58,6 +58,11 @@ class PackageController extends Controller
     }
 
     public function detail_package(Request $request){
+        // get header
+        $headers = $request->header('Authorization');
+        $header = explode(" ", $headers);
+        
+        $company_id = DB::table('api_credentials')->where('token_api',$header[1])->value('company_id');
 
         $data_json = json_decode(file_get_contents("php://input"), true);
         if (empty($data_json['track_id'])) {
@@ -74,6 +79,7 @@ class PackageController extends Controller
                             ->join('deliveries','deliveries.package_id','=','packages.id')
                             ->leftjoin('users','users.id','=','deliveries.courrier_id')
                             ->where('deliveries.track_id', $data_json['track_id'])
+                            ->where('packages.company_id', $company_id)
                             ->first();
 
         if (count($package) == 0) {
