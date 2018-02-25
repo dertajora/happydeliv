@@ -241,12 +241,12 @@ class PackageController extends Controller
         }
 
         $i = 1;
-        foreach($packages as $row){
+        foreach($final_packages as $row){
             $row->sequence = $i;
             $i=$i+1;
         }
 
-        return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $packages]);
+        return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $final_packages]);
          
     }
 
