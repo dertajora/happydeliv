@@ -193,10 +193,12 @@ class PackageController extends Controller
         $packages = DB::table('deliveries')
                             ->select('deliveries.track_id', 'packages.recipient_name', 'packages.resi_number',
                                 'packages.recipient_address', 'deliveries.destination_lat as lat_address',  
-                                'deliveries.destination_longi as longi_address'
+                                'deliveries.destination_longi as longi_address', 'deliveries.status'
                                 )
                             ->join('packages','packages.id','=','deliveries.package_id')
-                            ->whereIn('deliveries.status',[1,2,3])
+                            ->whereIn('deliveries.status',[1])
+                            ->where('deliveries.destination_lat','!=',0.00000000)
+                            ->where('deliveries.destination_longi','!=',0.00000000)
                             ->where('deliveries.courrier_id', $user_id)
                             ->orderBy('deliveries.created_at','desc')
                             ->get();
