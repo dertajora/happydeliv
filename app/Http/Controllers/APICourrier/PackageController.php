@@ -201,18 +201,44 @@ class PackageController extends Controller
                             ->orderBy('deliveries.created_at','desc')
                             ->get();
 
-        for ($i=0; $i < count($packages); $i++) { 
-            if ($i == 0) {
-                $packages[$i]->previous_lat = $data->current_lat;
-                $packages[$i]->previous_longi = $data->current_longi;
-            }else{
-                $packages[$i]->previous_lat = $packages[$i-1]->lat_address;
-                $packages[$i]->previous_longi = $packages[$i-1]->longi_address;
-            }
-        }
-
         if (count($packages) == 0) 
             return response()->json(['result_code' => 2, 'result_message' => 'List deliveries not found', 'data' => array()]);
+
+
+        $new_list[0] = array('track_id' => "start", "lat_address" => $data->current_lat, "longi_address" => $data->current_longi );
+        
+        // ubah tipe list package jadi array
+        foreach ($packages as $row) {
+            $new_packages[] = (array)$row;
+        }
+
+        $packages_absolute = $new_packages;
+        $next = 1;
+        for ($i=0; $i < count($packages_absolute); $i++) { 
+            
+            $nearest = $this->get_nearest_position($new_list[$i], $new_packages);
+            $new_list[$next] = $new_packages[$nearest];
+            array_splice($new_packages,$nearest,1);
+            $next = $next + 1;
+            
+        }
+
+        // hilangkan index current GPS
+        array_splice($new_list,0,1);
+        // ubah tipe list package jadi object
+        foreach ($new_list as $row) {
+            $final_packages[] = (object)$row;
+        }
+        
+        for ($i=0; $i < count($final_packages); $i++) { 
+            if ($i == 0) {
+                $final_packages[$i]->previous_lat = $data->current_lat;
+                $final_packages[$i]->previous_longi = $data->current_longi;
+            }else{
+                $final_packages[$i]->previous_lat = $final_packages[$i-1]->lat_address;
+                $final_packages[$i]->previous_longi = $final_packages[$i-1]->longi_address;
+            }
+        }
 
         $i = 1;
         foreach($packages as $row){
@@ -222,6 +248,54 @@ class PackageController extends Controller
 
         return response()->json(['result_code' => 1, 'result_message' => 'List deliveries.', 'data' => $packages]);
          
+    }
+
+    public function get_nearest_position($start_position, $list_locations){
+
+        for ($i=0; $i < count($list_locations) ; $i++) { 
+            $list_locations[$i]['distance'] = $this->haversine_method($start_position['lat_address'], $start_position['longi_address'], $list_locations[$i]['lat_address'], $list_locations[$i]['longi_address']);
+        }
+
+        $index_nearest = $this->minOfKey($list_locations, "distance");
+        
+        return $index_nearest;
+        
+    }
+
+    function minOfKey($array, $key) {
+        foreach ($array as $row) {
+            $new_list[] = (array)$row;
+        }
+        
+        if (!is_array($new_list) || count($new_list) == 0) return false;
+        $min = $new_list[0][$key];
+        $x = 0;
+        $key_array = 0;
+        foreach($new_list as $a) {
+            if($a[$key] < $min) {
+                   $min = $a[$key];
+                   $key_array = $x;
+            }
+            $x = $x+1;
+        }
+        return $key_array;
+    }
+
+    function haversine_method($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
+    {
+          $earthRadius = 6371000;
+          // convert from degrees to radians
+          $latFrom = deg2rad($latitudeFrom);
+          $lonFrom = deg2rad($longitudeFrom);
+          $latTo = deg2rad($latitudeTo);
+          $lonTo = deg2rad($longitudeTo);
+
+          $latDelta = $latTo - $latFrom;
+          $lonDelta = $lonTo - $lonFrom;
+
+          $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+          return $angle * $earthRadius;
     }
 
 

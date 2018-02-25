@@ -138,7 +138,163 @@ class WebsiteController extends Controller
     }
 
     public function laboratorium(){
+ 
+        $locations[] = array(
+            'name' => 'Moxy',
+            'lat' => -6.900079, 
+            'lng' => 107.612222
+        );
+
+        $locations[] = array(
+            'name' => 'KPAD Gegerkalong',
+            'lat' => -6.867916,  
+            'lng' => 107.586257
+        );
+
+        $locations[] = array(
+            'name' => 'Telkom Gegerkalong',
+            'lat' => -6.871925, 
+            'lng' => 107.588573
+        );
+
+        $locations[] = array(
+            'name' => 'Cups Coffe',
+            'lat' => -6.901317, 
+            'lng' => 107.613553
+        );
+
+        $locations[] = array(
+            'name' => 'ITB',
+            'lat' => -6.891587, 
+            'lng' => 107.610691
+        );
+
+        $new_list[0] = $locations[0];
         
+        array_splice($locations,0,1);
+        $locations_absolute = $locations;
+        $next = 1;
+        for ($i=0; $i < count($locations_absolute); $i++) { 
+            
+            print_r($new_list);
+            
+            $nearest = $this->get_nearest_position($new_list[$i], $locations);
+            
+            $new_list[$next] = $locations[$nearest];
+            array_splice($locations,$nearest,1);
+            $next = $next + 1;
+            
+        }
+       
+    }
+
+    public function get_nearest_position($start_position, $list_locations){
+        for ($i=0; $i < count($list_locations) ; $i++) { 
+            $list_locations[$i]['distance'] = $this->haversine_method($start_position['lat'], $start_position['lng'], $list_locations[$i]['lat'], $list_locations[$i]['lng']);
+        }
+
+        $index_nearest = $this->minOfKey($list_locations, "distance");
+        return $index_nearest;
+        
+    }
+
+    function minOfKey($array, $key) {
+        if (!is_array($array) || count($array) == 0) return false;
+        $min = $array[0][$key];
+        $x = 0;
+        $key_array = 0;
+        foreach($array as $a) {
+            if($a[$key] < $min) {
+                   $min = $a[$key];
+                   $key_array = $x;
+            }
+            $x = $x+1;
+        }
+        return $key_array;
+    }
+
+    function haversine_method($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
+    {
+          $earthRadius = 6371000;
+          // convert from degrees to radians
+          $latFrom = deg2rad($latitudeFrom);
+          $lonFrom = deg2rad($longitudeFrom);
+          $latTo = deg2rad($latitudeTo);
+          $lonTo = deg2rad($longitudeTo);
+
+          $latDelta = $latTo - $latFrom;
+          $lonDelta = $lonTo - $lonFrom;
+
+          $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+          return $angle * $earthRadius;
+    }
+
+    public function laboratorium_b(){
+
+        $locations[] = array(
+            'name' => 'Moxy',
+            'lat' => -6.900079, 
+            'lng' => 107.612222
+        );
+        
+        $locations[] = array(
+            'name' => 'Gedung DPR',
+            'lat' => -6.210345, 
+            'lng' => 106.800041
+        );
+
+        $locations[] = array(
+            'name' => 'ITB',
+            'lat' => -6.891587, 
+            'lng' => 107.610691
+        );
+
+        $locations[] = array(
+            'name' => 'Taman',
+            'lat' => -6.213302, 
+            'lng' => 106.808372
+        );
+        
+
+        try {
+            
+            // Use libcurl to connect and communicate
+            $ch = curl_init(); // Initialize a cURL session
+            curl_setopt($ch, CURLOPT_URL, 'https://api.routexl.nl/tour'); // Set the URL
+            curl_setopt($ch, CURLOPT_HEADER, 0); // No header in the output
+            curl_setopt($ch, CURLOPT_POST, 1); // Do a regular HTTP POST
+            curl_setopt($ch, CURLOPT_POSTFIELDS, 'locations=' . json_encode($locations)); // Add the locations
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the output as a string
+            curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate'); // Compress
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); // Basic authorization
+            curl_setopt($ch, CURLOPT_USERPWD, 'dertajora:garenaindonesia'); // Your credentials
+            
+            // Do not use this!
+            if (false) curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Unsafe!
+            
+            // Execute the given cURL session
+            $output = curl_exec($ch); // Get the output
+            $this->http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Last received HTTP code
+            $this->error = curl_error($ch); // Get the last error
+            curl_close($ch); // Close the connection
+            dd(json_decode($output));
+            // Decode the output
+            if(json_decode($output)) {
+                $this->result = json_decode($output);
+            }else{
+                $this->result = $output;
+            }
+            
+        } catch(exception $e) {
+            
+            $this->error = $e->getMessage();
+            return false;
+            
+        } 
+        
+       
+
     }
 
     // send email after partner register 
