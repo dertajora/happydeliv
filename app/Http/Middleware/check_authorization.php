@@ -18,12 +18,12 @@ class check_authorization
     {
         $headers = $request->header('Authorization');
         if (empty($headers)) {
-            return response()->json(['result_code' => 100, 'result_message' => 'Invalid Authorization']);
+            return response()->json(['result_code' => 300, 'result_message' => 'Invalid Authorization']);
         } 
 
         $header = explode(" ", $headers);
         if ($header[0] != "Basic") {
-            return response()->json(['result_code' => 100, 'result_message' => 'Invalid Authorization']);
+            return response()->json(['result_code' => 300, 'result_message' => 'Invalid Authorization']);
         }
 
         $session_search = DB::table('api_credentials')->where('token_api',$header[1])->first();
@@ -38,7 +38,7 @@ class check_authorization
 
             return $next($request);
         }else{
-            return response()->json(['result_code' => 100, 'result_message' => 'Invalid Credential']);
+            return response()->json(['result_code' => 300, 'result_message' => 'Invalid Credential']);
         }
         
     }
