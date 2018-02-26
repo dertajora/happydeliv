@@ -14,7 +14,7 @@ URI     : https://colorlib.com
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="HappyDeliv - Empower Your Delivery Service">
+    <meta name="description" content="HappyDeliv - We are providing service to empower logistic business">
     <meta name="keywords" content="delivery, happydeliv, tracking kiriman, kiriman, paket, jne, tiki, ekspedisi, logistik">
 
     <!-- Font -->
