@@ -49,7 +49,7 @@ URI     : https://colorlib.com
                                 <li class="nav-item"> <a class="nav-link" href="#gallery">GALERI</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#download">DOWNLOAD</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">KONTAK</a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="http://happydeliv.com:4567/" target="_blank">API</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="http://developer.happydeliv.com" target="_blank">API</a> </li>
                                 <li class="nav-item"><a href="{{URL::to('/')}}/login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">LOGIN</a></li>
                             </ul>
                         </div>
