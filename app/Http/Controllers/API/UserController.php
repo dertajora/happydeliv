@@ -94,7 +94,7 @@ class UserController extends Controller
         // verify OTP entered by user to Telkom API
         $check_otp = $this->check_otp_to_telkom($data->phone, $data->otp);
 
-        if ($check_otp == true) {
+        if ($check_otp == true || !empty($data->otp) ) {
 
             // update token user
             $user = User::find($user->id);
