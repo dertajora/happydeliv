@@ -10,11 +10,20 @@ URI     : https://colorlib.com
  -->
 
 <head>
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114897780-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114897780-1');
+    </script>
     <title>HappyDeliv - Empower Your Delivery Service</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="HappyDeliv - Empower Your Delivery Service">
+    <meta name="description" content="HappyDeliv - We are providing service to empower logistic business">
     <meta name="keywords" content="delivery, happydeliv, tracking kiriman, kiriman, paket, jne, tiki, ekspedisi, logistik">
 
     <!-- Font -->
@@ -49,7 +58,7 @@ URI     : https://colorlib.com
                                 <li class="nav-item"> <a class="nav-link" href="#gallery">GALERI</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#download">DOWNLOAD</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="#contact">KONTAK</a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="http://happydeliv.com:4567/" target="_blank">API</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="http://developer.happydeliv.com" target="_blank">API</a> </li>
                                 <li class="nav-item"><a href="{{URL::to('/')}}/login" class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">LOGIN</a></li>
                             </ul>
                         </div>
